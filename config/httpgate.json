@@ -1,0 +1,28 @@
+{
+  "development": {
+    "gamehttp": {
+      "host": "127.0.0.1",
+      "port": 5005,
+      "db": {
+        "host": "10.1.1.197",
+        "port": 3306,
+        "username": "root",
+        "password": "123321",
+        "database": "heroh5"
+      }
+    }
+  },
+  "production": {
+    "gamehttp": {
+      "host": "127.0.0.1",
+      "port": 5005,
+      "db": {
+        "host": "10.1.1.197",
+        "port": 3306,
+        "username": "root",
+        "password": "123321",
+        "database": "heroh5"
+      }
+    }
+  }
+}

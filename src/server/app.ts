@@ -3,9 +3,6 @@ import * as path from 'path';
 /**
  * Init app for client.
  */
-// const app = Pomelo.createApp({
-//     base: path.resolve(__dirname, '../../'),
-// });
 const app = Pomelo.createApp();
 /*
 *  configure for global
@@ -26,6 +23,19 @@ app.configure('production|development', () => {
 app.configure('production|development', 'gate', () => {
     app.set('connectorConfig',{ 
         connector: Pomelo.connectors.hybridconnector,
+        useProtobuf: true,
+    });
+});
+
+/*
+*  websocket connector server
+*  socket连接服务器,负责收发消息,维护连接
+*/
+app.configure('production|development', 'connector', () => {
+    app.set('connectorConfig',{
+        connector: Pomelo.connectors.hybridconnector,
+        heartbeat: 3,
+        useDict: true,
         useProtobuf: true,
     });
 });

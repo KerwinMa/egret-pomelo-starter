@@ -1,19 +1,33 @@
 import * as Pomelo from 'pomelo';
-import { HandlerArgs, HandlerSession, HandlerNext } from '../../../utils/common/HandlerInterface';
+import { 
+    PomeloHandler,
+    HandlerArgs, 
+    HandlerSession, 
+    HandlerNext,
+    HandlerFunc,
+} from '../../../utils/common/HandlerInterface';
 
-export class Handler{
-    private app: Pomelo.Application;
+import { serverDispatch } from '../route/dispatch';
 
-    constructor (app: Pomelo.Application) {
+export class Handler  implements PomeloHandler{
+    app: Pomelo.Application;
+    channelService: Pomelo.ChannelService;
+
+    constructor (app:Pomelo.Application) {
         this.app = app;
+        this.channelService = app.get('channelService');
     }
 
-    async queryConnector (args: HandlerArgs, session: HandlerSession, next: HandlerNext) {
+    async queryConnector
+    (args: HandlerArgs, session: HandlerSession, next: HandlerNext) : Promise <void> {
         const connectors: Pomelo.ServerInfo[] = this.app.getServersByType('connector');
         if (!connectors || connectors.length === 0) {
-            next(new Error('cannot find connector servers!'));
+            return next(new Error('cannot find connector servers!'));
         }
+        const server = serverDispatch(connectors);
+        next(null, { host: server.host, port: server.port, id: server.id });
     }
+
 }
 
 module.exports = function (app: Pomelo.Application) {
