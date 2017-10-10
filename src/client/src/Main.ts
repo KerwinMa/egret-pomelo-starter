@@ -6,7 +6,7 @@
         "webp": "image",
         "json": "json",
         "fnt": "font",
-        "pvr": "pvr",
+        "pvr": 'pvr',
         "mp3": "sound",
         "proto": "proto",
         "txt": "txt"
@@ -46,21 +46,21 @@ class Main extends eui.UILayer {
 
         this.loadRes()
 
-        let sss = new Map();
+        const sss = new Map();
         let sym2 = Symbol("key"); // 可选的字符串key
         
     }
 
     private async loadRes()
     {
-        let self = this;
+        const self = this;
 
         // 读取配置文件
         await RES.loadConfig();
 
         // 读取preload 先显示一张模糊的背景图
         await RES.loadGroup('preload');
-        let preloadUI = new PreLoadingUI();
+        const preloadUI = new PreLoadingUI();
         GameLayerManager.gameLayer().addChild(preloadUI);
 
         // 主加载界面
@@ -69,7 +69,7 @@ class Main extends eui.UILayer {
         GameLayerManager.gameLayer().removeChild(preloadUI);
         GameLayerManager.gameLayer().addChild(self.loadingView);
 
-        let loading:RES.PromiseTaskReporter = {
+        const loading:RES.PromiseTaskReporter = {
             onProgress(current: number, total: number){
                 self.loadingView.setProgress(current,total);
             }
@@ -115,7 +115,7 @@ class Main extends eui.UILayer {
         // var yTest = my.dx(myTest.toString(), key, iv);
         // var yStr = JSON.parse(yTest);
 
-        let test = RES.getRes("enJson_txt");
+        const test = RES.getRes('enJson_txt');
 
     }
 
