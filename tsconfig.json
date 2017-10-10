@@ -12,17 +12,11 @@
         "rootDir": "./src",
         "outDir": "./dist/server",
         "declaration": true,
-        "baseUrl": "./src/modules",
-        "paths": {
-            "DB": [
-              "./src/modules/DB"
-            ]
-        }
+        "typeRoots": [
+            "/"
+        ]
     },
     "exclude": [
         "./src/client"
-    ],
-    "include": [
-        "./src/typings"
     ]
 }
