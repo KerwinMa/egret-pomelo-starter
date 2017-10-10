@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="LoginSkin" width="1280" height="720" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*">
+	<e:Group id="group_bg" left="0" right="0" top="0" bottom="0">
+		<e:Image id="login_bg" left="0" right="0" top="0" bottom="0" source="login_bg_jpg"/>
+	</e:Group>
+</e:Skin>

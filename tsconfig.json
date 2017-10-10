@@ -10,7 +10,7 @@
         "experimentalDecorators": true,
         "removeComments": true,
         "rootDir": "./src",
-        "outDir": "./build",
+        "outDir": "./dist/server",
         "declaration": true,
         "baseUrl": "./src",
         "paths": {

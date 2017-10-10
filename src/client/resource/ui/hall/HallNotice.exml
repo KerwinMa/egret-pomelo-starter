@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="HallNotice" width="1280" height="80" xmlns:e="http://ns.egret.com/eui">
+	<e:Group width="1280" height="80" x="0" y="-4.64">
+		<e:Image source="trumpet_png" x="200.85" y="0" anchorOffsetX="0" width="77.15" anchorOffsetY="0" height="77.15"/>
+		<e:Group width="1002" height="59" x="278" y="11.76">
+			<e:Image source="load_tipBg_png" left="0" right="0" top="0" bottom="0"/>
+			<e:Label text="欢迎来到中原麻将,玩竞技模式随时获取现金奖励！！！" x="16.1" y="16.5" height="26" size="26" anchorOffsetX="0" width="918.85"/>
+		</e:Group>
+	</e:Group>
+</e:Skin>

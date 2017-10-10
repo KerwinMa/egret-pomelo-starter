@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="RankBtn" width="170" height="100" currentState="up" xmlns:e="http://ns.egret.com/eui" states="up,down" >
+	<e:Image source="lobby_按钮排行榜_png" x="0" y="0" scaleX.down="0.9" scaleY.down="0.9" x.down="8.5" y.down="5"/>
+</e:Skin>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="HallUserGold" width="260" height="60" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="charm_bg_png" left="0" right="0" top="0" bottom="0" anchorOffsetX="0"/>
+	<e:Image x="13" y="9.81" anchorOffsetX="0" width="44.05" anchorOffsetY="0" height="44.38" source="gold1_png"/>
+	<e:Group width="154" height="36" x="61" y="12" anchorOffsetY="0" anchorOffsetX="0">
+		<e:Image source="room_金币1_png" x="1" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3"/>
+		<e:Image source="room_金币1_png" x="28" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3" scaleX="1" scaleY="1"/>
+		<e:Image x="55" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3" scaleX="1" scaleY="1" source="room_金币3_png"/>
+		<e:Image source="room_金币1_png" x="82" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3" scaleX="1" scaleY="1"/>
+	</e:Group>
+	<e:Button id="add_gold_btn" label="" x="199" y="1.5" anchorOffsetX="0" width="54" anchorOffsetY="0" height="54" skinName="ButtonAdd"/>
+</e:Skin>

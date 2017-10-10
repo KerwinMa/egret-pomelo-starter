@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="HallShopAddGold" width="1280" height="620" xmlns:e="http://ns.egret.com/eui" xmlns:game="game.*">
+	<e:Image source="lobby_半透明背景_png" anchorOffsetY="0" left="0" right="0" top="0" bottom="0"/>
+	<e:List width="1110.6" height="543.95" x="84.7" y="28.71" anchorOffsetX="0" anchorOffsetY="0" itemRendererSkinName="HallShopGoldItem">
+		<e:ArrayCollection>
+			<e:Array>
+				<e:Object items="null"/>
+				<e:Object items="null"/>
+				<e:Object items="null"/>
+				<e:Object items="null"/>
+				<e:Object items="null"/>
+				<e:Object items="null"/>
+				<e:Object items="null"/>
+			</e:Array>
+		</e:ArrayCollection>
+		<e:layout>
+			<e:TileLayout verticalGap="16" horizontalGap="58" horizontalAlign="center" verticalAlign="middle" rowAlign="justifyUsingGap" columnAlign="justifyUsingWidth"/>
+		</e:layout>
+	</e:List>
+</e:Skin>
