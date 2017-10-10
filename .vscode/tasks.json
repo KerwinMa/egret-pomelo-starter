@@ -26,7 +26,8 @@
             "command": "egret",
             "args": [
                 "build",
-                "./src/client",
+                "src/client",
+                "-e",
                 "-sourcemap"
             ],
             "problemMatcher": [

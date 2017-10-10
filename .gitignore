@@ -1,6 +1,6 @@
 node_modules
 dist/**
-bin/**
-bin-debug/**
+src/client/bin/**
+src/client/bin-debug/**
 logs/**
 shared/
