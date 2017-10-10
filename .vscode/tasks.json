@@ -19,6 +19,20 @@
                 "$tsc"
             ],
             "isBackground": true
+        },
+        {
+            "taskName": "Egret - Build",
+            "type": "shell",
+            "command": "egret",
+            "args": [
+                "build",
+                "./src/client",
+                "-sourcemap"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "isBackground": true
         }
     ]
 }
