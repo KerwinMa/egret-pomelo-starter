@@ -12,7 +12,7 @@
         "rootDir": "./src",
         "outDir": "./build",
         "declaration": true,
-        "baseUrl": ".",
+        "baseUrl": "./src",
         "paths": {
             "*": [
               "./src/typings/*"

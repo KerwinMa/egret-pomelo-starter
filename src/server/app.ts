@@ -1,5 +1,14 @@
 import * as Pomelo from 'pomelo';
 import * as path from 'path';
+
+import { ExcelBuilder } from '../modules/FileDataBuilder';
+const builder = new ExcelBuilder('../../shared/files', '../../shared/data/', {
+    input: 'sss',
+    out: '',
+    idName: 'id',
+});
+builder.build();
+return;
 /**
  * Init app for client.
  */

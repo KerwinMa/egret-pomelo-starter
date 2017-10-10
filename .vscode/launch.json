@@ -5,18 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "koa2",
+            "name": "debug build",
             "type": "node",
             "request": "launch",
             "stopOnEntry": false,
             "args": [],
-            "cwd": "${workspaceRoot}/src/server",
+            "cwd": "${workspaceRoot}/build/server",
+            "program": "${workspaceRoot}/src/server/app.ts",
             "outFiles": ["${workspaceRoot}/build/**/*.js"],
-            "runtimeExecutable": "pomelo",
-            "runtimeArgs": [
-                "start",
-                "-t gate"
-            ],
             "env": {
                 "NODE_ENV": "development"
             },

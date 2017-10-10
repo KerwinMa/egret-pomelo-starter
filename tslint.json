@@ -1,6 +1,7 @@
 {
     "extends": "tslint-config-airbnb",
     "rules": {
-      "ter-indent": 4
+      "ter-indent": 4,
+      "no-increment-decrement": false
     }
   }
