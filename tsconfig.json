@@ -12,25 +12,17 @@
         "rootDir": "./src",
         "outDir": "./dist/server",
         "declaration": true,
-        "baseUrl": "./src",
+        "baseUrl": "./src/modules",
         "paths": {
-            "*": [
-              "./src/typings/*"
+            "DB": [
+              "./src/modules/DB"
             ]
-          }
-    },
-    "typeRoots": [
-        "./node_modules/@types",
-        "./src/typings"
-      ],
-    "atom": {
-        "rewriteTsconfig": true
+        }
     },
     "exclude": [
-        "node_modules",
-        "build"
+        "./src/client"
     ],
     "include": [
-        "src/**/*"
+        "./src/typings"
     ]
 }
