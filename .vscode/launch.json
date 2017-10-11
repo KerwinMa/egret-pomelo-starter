@@ -10,24 +10,38 @@
             "preLaunchTask": "Egret - Build",
             "userDataDir": "${tmpdir}",
             "port": 5659
-        },
-        {
-            "name": "Wing 内置播放器调试",
-            "type": "chrome",
+        },{
+            "type": "node",
             "request": "launch",
-            "file": "${workspaceRoot}/src/client/index.html",
-            //"url": "http://mysite.com/index.html",
-            "runtimeExecutable": "${execPath}",
+            "name": "Debug Server",
             "sourceMaps": true,
-            "webRoot": "${workspaceRoot}/src/client",
-            "preLaunchTask": "Egret - Build",
-            "port": 5659
+            "program": "${workspaceFolder}/src/server/app.ts",
+            "preLaunchTask": "TS - Compile Server",
+            "outFiles": [
+                "${workspaceFolder}/dist/server/app.js"
+            ]
         },
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug all server",
-            "port": 9229,
+            "name": "Debug Gate Server",
+            "port": 9001,
+            "sourceMaps": true,
+            "preLaunchTask": "Pomelo Start"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug Connecotor Server-1",
+            "port": 9002,
+            "sourceMaps": true,
+            "preLaunchTask": "Pomelo Start"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug Connecotor Server-2",
+            "port": 9003,
             "sourceMaps": true,
             "preLaunchTask": "Pomelo Start"
         }

@@ -11,12 +11,14 @@
         "removeComments": true,
         "rootDir": "./src",
         "outDir": "./dist",
-        "declaration": true,
+        "declaration": false,
         "typeRoots": [
             "/"
         ]
     },
     "exclude": [
-        "./src/client"
+        "node_modules",
+        "dist",
+        "src/client/"
     ]
 }

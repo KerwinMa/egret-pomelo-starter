@@ -42,7 +42,7 @@
             "args": [
                 "start",
                 "-d",
-                "./dist/server"
+                "./src/server"
             ],
             "problemMatcher": [
                 "$tsc"
