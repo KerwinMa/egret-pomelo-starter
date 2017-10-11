@@ -2,7 +2,7 @@ import * as Redis from 'ioredis';
 
 // redis 入参
 export interface RedisDbConfig{
-    port: number;
+    port?: number;
     host?: string;
     family?: number;
     password?: string;
@@ -10,7 +10,8 @@ export interface RedisDbConfig{
 }
 
 export class RedisClient {
-    constructor (cfg: RedisDbConfig) {
+    constructor (cfg ?: RedisDbConfig) {
+        if (!cfg || !cfg.port) cfg.port = 6379;
         return Redis(cfg);
     }
 }

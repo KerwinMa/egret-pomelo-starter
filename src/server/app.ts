@@ -1,5 +1,6 @@
 import * as Pomelo from 'pomelo';
 import * as path from 'path';
+import { AppFacade } from './AppFacade';
 
 /**
  * Init app for client.
@@ -26,6 +27,18 @@ app.configure('production|development', () => {
     app.set('errorHandler', (err: Error, msg: string, resp: any, session: any, next: Function) => {
         console.error(err);
     });
+});
+
+/*
+*  websocket gate server
+*  connector 负载均衡服务器
+*/
+app.configure('production|development', 'master', () => {
+    // start up pureMvc
+    const appFacade = AppFacade.getInstance();
+    appFacade.startUp();
+
+    app.appFacade = appFacade;
 });
 
 /*

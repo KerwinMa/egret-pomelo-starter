@@ -11,5 +11,7 @@
 			],
 			"root": "src"
 		}
-	]
+	],
+	"main": "bin/puremvc/puremvc.js",
+	"types": "bin/puremvc/puremvc.d.ts"
 }

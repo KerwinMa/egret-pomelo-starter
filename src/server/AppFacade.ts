@@ -1,13 +1,14 @@
+import * as puremvc from '../modules/puremvc';
 
-
-module game {
+import { StartupCommand } from './app/controller/StartupCommand';
 
 export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
-
- 	public constructor() {
-     super();
- }
     public static STARTUP: string = 'startup';
+    public static instance: AppFacade = null;
+
+    public constructor () {
+        super();
+    }
 
     public static getInstance(): AppFacade {
         if (this.instance == null) this.instance = new AppFacade();
@@ -19,13 +20,10 @@ export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
         this.registerCommand(AppFacade.STARTUP, StartupCommand);
     }
 
-		/**
-		 * 启动PureMVC，在应用程序中调用此方法，并传递应用程序本身的引用
-		 * @param	rootView	-	PureMVC应用程序的根视图root，包含其它所有的View Componet
-		 */
-    public startUp(rootView: egret.DisplayObjectContainer): void {
-        this.sendNotification(AppFacade.STARTUP, rootView);
+    public startUp(): void {
+        this.sendNotification(AppFacade.STARTUP);
         this.removeCommand(AppFacade.STARTUP); // PureMVC初始化完成，注销STARUP命令
+
+        console.info('================>>>> pureMvc appfacade start up...');
     }
-}
 }
