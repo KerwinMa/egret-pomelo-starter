@@ -22,6 +22,14 @@
             "webRoot": "${workspaceRoot}/src/client",
             "preLaunchTask": "Egret - Build",
             "port": 5659
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug all server",
+            "port": 9229,
+            "sourceMaps": true,
+            "preLaunchTask": "Pomelo Start"
         }
     ]
 }

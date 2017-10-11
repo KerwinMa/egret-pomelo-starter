@@ -5,13 +5,24 @@ import * as path from 'path';
  * Init app for client.
  */
 const app = Pomelo.createApp();
+
+/*
+*  set environment fro nodejs
+*  default development
+*/
+const env = app.get('env') || 'development';
+process.env.NODE_ENV = env;
+
 /*
 *  configure for global
 *  全局设置
 */
 app.configure('production|development', () => {
+    // app global filter
     app.before(Pomelo.filters.toobusy());
-    // app.filter(pomelo.filters.timeout())
+    app.filter(Pomelo.filters.timeout());
+
+    // app global errorhandler
     app.set('errorHandler', (err: Error, msg: string, resp: any, session: any, next: Function) => {
         console.error(err);
     });
