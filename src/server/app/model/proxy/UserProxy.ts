@@ -1,7 +1,7 @@
 import * as puremvc from 'puremvc';
 import UserVO from '../../../../modules/Schema/VO/UserVO';
 
-export default class UserProxy extends puremvc.Proxy {
+export default class UserProxy extends puremvc.Proxy implements puremvc.IProxy {
 
     /**
      * get list of all userVO

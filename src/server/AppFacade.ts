@@ -1,10 +1,12 @@
 import * as puremvc from 'puremvc';
+import * as Pomelo from 'pomelo';
 
 import StartupCommand from './app/controller/StartupCommand';
 
 export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
     public static START: string = 'start';
     public static instance: AppFacade = null;
+
 
     public constructor () {
         super('server');
@@ -20,7 +22,7 @@ export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
         this.registerCommand(AppFacade.START, StartupCommand);
     }
 
-    public start(): void {
+    public start(app: Pomelo.Application): void {
         this.sendNotification(AppFacade.START);
         this.removeCommand(AppFacade.START); // PureMVC初始化完成，注销STARUP命令
 

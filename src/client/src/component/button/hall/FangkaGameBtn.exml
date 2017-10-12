@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="FangkaGameBtn" width="362" height="118" xmlns:e="http://ns.egret.com/eui" states="up,down" >
+	<e:Image source="lobby_right_血流成河_png" x="0" y="0" scaleX.down="0.9" scaleY.down="0.9" x.down="18.1" y.down="5.9"/>
+</e:Skin>

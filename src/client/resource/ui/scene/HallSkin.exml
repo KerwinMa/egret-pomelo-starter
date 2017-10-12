@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="HallSkin" width="1280" height="720" xmlns:e="http://ns.egret.com/eui" states="home,shop" >
+	<e:Image source="hallBlur_jpg" includeIn="shop" x="0" y="0"/>
+	<e:Image source="hallBgMid_jpg" left="0" right="0" top="0" bottom="0" includeIn="home"/>
+	<e:Image source="girl (3)_png" x="489.83" y="169" includeIn="home"/>
+	<e:Image source="hallBgLeft_jpg" x="-640" y="0" includeIn="home"/>
+	<e:Image source="hallBgRight_jpg" x="1280" includeIn="home"/>
+</e:Skin>

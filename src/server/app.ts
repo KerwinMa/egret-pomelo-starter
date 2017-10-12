@@ -37,7 +37,7 @@ app.configure('production|development', () => {
 app.configure('production|development', 'master', () => {
     // start up pureMvc
     const appFacade = AppFacade.getInstance();
-    appFacade.start();
+    appFacade.start(app);
 
     app.set('appFacade', appFacade, true);
 });

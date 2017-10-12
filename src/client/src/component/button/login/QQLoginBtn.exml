@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="QQLoginBtn" width="222" height="74" currentState="up" xmlns:e="http://ns.egret.com/eui"  states="up,down,disabled" >
+	<e:Image source="qqlogin_png" x="0" y="4" scaleX.down="0.9" scaleY.down="0.9" x.down="11.1" y.down="5.7"/>
+</e:Skin>

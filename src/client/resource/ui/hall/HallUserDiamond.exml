@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="HallUserDiamond" width="260" height="60" xmlns:e="http://ns.egret.com/eui">
+	<e:Image source="charm_bg_png" left="0" right="0" top="0" bottom="0" anchorOffsetX="0"/>
+	<e:Image x="14" y="7.81" anchorOffsetX="0" width="44.05" anchorOffsetY="0" height="44.38" source="diamond_png"/>
+	<e:Group width="154" height="36" x="61" y="12" anchorOffsetY="0" anchorOffsetX="0">
+		<e:Image source="room_金币1_png" x="1" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3"/>
+		<e:Image source="room_金币1_png" x="28" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3" scaleX="1" scaleY="1"/>
+		<e:Image source="room_金币1_png" x="55" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3" scaleX="1" scaleY="1"/>
+		<e:Image source="room_金币1_png" x="82" anchorOffsetX="0" width="27" anchorOffsetY="0" height="27" y="3" scaleX="1" scaleY="1"/>
+		<e:Button label="" x="139" y="-9" anchorOffsetX="0" width="54" anchorOffsetY="0" height="54" skinName="ButtonAdd"/>
+	</e:Group>
+</e:Skin>

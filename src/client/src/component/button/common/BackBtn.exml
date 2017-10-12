@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="BackBtn" width="80" height="82" currentState="up" xmlns:e="http://ns.egret.com/eui" states="up,down" >
+	<e:Image source="lobby_按钮返回_png" x="0" y="0" scaleX.down="0.9" scaleY.down="0.9" y.down="4.1" x.down="4"/>
+</e:Skin>
