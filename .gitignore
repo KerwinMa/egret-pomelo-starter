@@ -1,6 +1,0 @@
-node_modules
-dist/**
-src/client/bin/**
-src/client/bin-debug/**
-logs/**
-shared/

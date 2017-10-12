@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="HallJackPot" width="400" height="300" xmlns:e="http://ns.egret.com/eui">
-	<e:Image source="img_1_png" x="58" y="116"/>
-	<e:Image source="RedPacket_大厅_png" x="154.78" y="63.48" anchorOffsetX="0" width="86.44" anchorOffsetY="0" height="105.05" rotation="360"/>
-	<e:Label text="本周当前奖池" x="1" y="23" anchorOffsetX="0" width="397" textAlign="center" textColor="0xf7bb07"/>
-	<e:Label text="¥ 2000" x="162" y="125" size="22"/>
-</e:Skin>

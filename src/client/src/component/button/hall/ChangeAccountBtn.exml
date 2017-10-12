@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="ChangeAccountBtn" width="52" height="52" currentState="up" xmlns:e="http://ns.egret.com/eui"  states="up,down" >
-	<e:Image source="room_退出_png" height="52" y="0" scaleX.down="0.9" scaleY.down="0.9" y.down="2.6" x.down="2.6"/>
-</e:Skin>

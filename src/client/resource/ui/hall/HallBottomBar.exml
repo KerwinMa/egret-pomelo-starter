@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="HallBottomBar" width="1280" height="160" xmlns:e="http://ns.egret.com/eui">
-	<e:Image source="lobby_底栏_png" x="3" y="55" anchorOffsetX="0" width="1276.3" anchorOffsetY="0" height="102.36"/>
-	<e:Button label="" x="93.68" y="25.87" width="170" height="100" skinName="RankBtn"/>
-	<e:Button label="" x="348.78" y="25.87" width="170" height="100" skinName="AwardBtn"/>
-	<e:Button label="" x="592.05" y="25.87" width="170" height="100" skinName="ActivityBtn"/>
-	<e:Button label="" x="813.76" y="25.87" width="170" height="100" skinName="ExchangeBtn"/>
-	<e:Button label="" x="1042.08" y="25.87" width="170" height="100" skinName="ShopBtn"/>
-</e:Skin>

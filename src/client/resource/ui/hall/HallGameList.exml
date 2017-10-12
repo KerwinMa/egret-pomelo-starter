@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="HallGameList" width="362" height="392" xmlns:e="http://ns.egret.com/eui">
-	<e:Button label="" x="0" y="0" width="362" height="118" skinName="FangkaGameBtn"/>
-	<e:Button label="" x="0" y="137" width="362" height="118" skinName="JIngsuGameBtn"/>
-	<e:Button label="" x="0" y="280" width="362" height="118" skinName="EnterGuild"/>
-</e:Skin>

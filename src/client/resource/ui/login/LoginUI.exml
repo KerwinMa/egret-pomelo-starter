@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<e:Skin class="LoginButtons" width="314" height="214" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
-	<e:Button id="btn_wechat" label="Button" x="46" y="18" skinName="WechatLoginBtn"/>
-	<e:Button id="btn_qq" label="Button" x="46" y="118" skinName="QQLoginBtn"/>
-</e:Skin>
