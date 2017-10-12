@@ -1,6 +1,6 @@
 import * as puremvc from 'puremvc';
 
-import { StartupCommand } from './app/controller/StartupCommand';
+import StartupCommand from './app/controller/StartupCommand';
 
 export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
     public static START: string = 'start';

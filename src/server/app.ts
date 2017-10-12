@@ -6,6 +6,7 @@ import { AppFacade } from './AppFacade';
  * Init app for client.
  */
 const app = Pomelo.createApp();
+app.set('name', 'egret-pomelo');
 
 /*
 *  set environment fro nodejs
@@ -30,8 +31,8 @@ app.configure('production|development', () => {
 });
 
 /*
-*  websocket gate server
-*  connector 负载均衡服务器
+*  start pureMvc
+*  get instance appFacade of pureMvc
 */
 app.configure('production|development', 'master', () => {
     // start up pureMvc

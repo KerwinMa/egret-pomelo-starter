@@ -1,17 +1,17 @@
 {
   "gate": [
-    {"id": "gate-server-1", "host": "localhost", "port": 3013, "clientPort": 3014, "frontend": true, "args":"--inspect=9001"}
+    {"id": "gate-server-1", "host": "localhost", "port": 3013, "clientPort": 2014, "frontend": true, "args":"--inspect=9001"}
   ],
   "connector": [
-    {"id": "connector-server-1", "host": "localhost", "port": 4030, "clientPort": 3030, "frontend": true, "args":"--inspect=9002"},
-    {"id": "connector-server-2", "host": "localhost", "port": 4031, "clientPort": 3031, "frontend": true, "args":"--inspect=9003"}
+    {"id": "connector-server-1", "host": "localhost", "port": 3080, "clientPort": 3001, "frontend": true, "args":"--inspect=9002"},
+    {"id": "connector-server-2", "host": "localhost", "port": 3081, "clientPort": 3002, "frontend": true, "args":"--inspect=9003"}
   ],
   "gameserver": [
-    {"id": "game-server-1", "host": "localhost", "port": 6050, "args":"--inspect=9004"},
-    {"id": "game-server-2", "host": "localhost", "port": 6051, "args":"--inspect=9005"},
-    {"id": "game-server-3", "host": "localhost", "port": 6052, "args":"--inspect=9006"}
+    {"id": "game-server-1", "host": "localhost", "port": 4001, "args":"--inspect=9004"},
+    {"id": "game-server-2", "host": "localhost", "port": 4002, "args":"--inspect=9005"},
+    {"id": "game-server-3", "host": "localhost", "port": 4003, "args":"--inspect=9006"}
   ],
   "gameserverall": [
-      {"id": "game-serverall-1", "host": "localhost", "port": 7010, "args":"--inspect=9007"}
+      {"id": "game-serverall-1", "host": "localhost", "port": 5001, "args":"--inspect=9007"}
   ]
 }

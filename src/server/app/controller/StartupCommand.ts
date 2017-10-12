@@ -1,6 +1,7 @@
 import * as puremvc from 'puremvc';
+import ModelPrepCommand from './ModelPrepCommand';
 
-export class StartupCommand extends puremvc.MacroCommand {
+export default class StartupCommand extends puremvc.MacroCommand {
 
     public constructor () {
         super();
@@ -8,6 +9,6 @@ export class StartupCommand extends puremvc.MacroCommand {
 
     public initializeMacroCommand () {
         // add subSubCommand
-        
+        this.addSubCommand( ModelPrepCommand );
     }
 }
