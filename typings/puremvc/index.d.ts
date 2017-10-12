@@ -182,7 +182,7 @@ declare module puremvc
         public model: IModel;
         public view: IView;
         public controller: IController;
-        constructor ();
+        constructor (multitonKey: string);
         public initializeFacade(): void;
         public initializeModel(): void;
         public initializeController(): void;
