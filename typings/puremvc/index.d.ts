@@ -182,6 +182,7 @@ declare module puremvc
         public model: IModel;
         public view: IView;
         public controller: IController;
+        public multitonKey: string;
         constructor (multitonKey: string);
         public initializeFacade(): void;
         public initializeModel(): void;
@@ -202,7 +203,7 @@ declare module puremvc
         public sendNotification(name: string, body?: any, type?: string): void;
         static SINGLETON_MSG: string;
         static instance: IFacade;
-        static getInstance(): IFacade;
+        static getInstance(multitonKey: string): IFacade;
     }
 
     export class Notifier

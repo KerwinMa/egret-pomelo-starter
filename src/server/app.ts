@@ -1,9 +1,9 @@
 import * as Pomelo from 'pomelo';
 import * as path from 'path';
-import { AppFacade } from './AppFacade';
+import { AppFacade } from './core/AppFacade';
 
 /**
- * Init app for client.
+ * Init a pomelo application.
  */
 const app = Pomelo.createApp();
 app.set('name', 'egret-pomelo');
@@ -31,18 +31,6 @@ app.configure('production|development', () => {
 });
 
 /*
-*  start pureMvc
-*  get instance appFacade of pureMvc
-*/
-app.configure('production|development', 'master', () => {
-    // start up pureMvc
-    const appFacade = AppFacade.getInstance();
-    appFacade.start(app);
-
-    app.set('appFacade', appFacade, true);
-});
-
-/*
 *  websocket gate server
 *  connector 负载均衡服务器
 */
@@ -66,8 +54,10 @@ app.configure('production|development', 'connector', () => {
     });
 });
 
-// start app
-app.start();
+const serverId = app.getServerId();
+const appFacade = AppFacade.getInstance(serverId);
+
+appFacade.start(app);
 
 process.on('uncaughtException', (err) => {
     console.error(' Caught exception: ' + err.stack);

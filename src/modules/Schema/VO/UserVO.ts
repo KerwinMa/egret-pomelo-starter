@@ -1,6 +1,6 @@
 import UserSexEnum from '../enum/UserSex';
 
-export default class UserVO {
+export default class UserVo {
     /**
      * Unique id key of the user.
     */

@@ -4,5 +4,4 @@ export default class ProxyName {
     ////////////////////////////////////////////////////////////////////////////////////////////
     
     public static userProxy: string = 'userProxy';
-    public static serverProxy: string = 'serverProxy';
 }
