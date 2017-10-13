@@ -1,6 +1,8 @@
 import * as puremvc from 'puremvc';
-
+import * as Logger from 'pomelo-logger';
 import StartupCommand from './controller/StartupCommand';
+
+const logger = Logger.getLogger('AppFacade', __filename);
 
 export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
     public static START: string = 'start';
@@ -33,6 +35,6 @@ export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
 
         // application start with puremvc ...
         app.start();
-        console.info(`================>>>> pureMvc appfacade start up in ${AppFacade.instance.multitonKey}...`);
+        logger.info(`pureMvc appfacade start up in ${AppFacade.instance.multitonKey}...`);
     }
 }

@@ -1799,7 +1799,7 @@ pomelo-loader@0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/pomelo-loader/-/pomelo-loader-0.0.6.tgz#28c4fe17fdfada286b9d467d173c8980eb98f438"
 
-pomelo-logger@0.1.7:
+pomelo-logger@0.1.7, pomelo-logger@^0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/pomelo-logger/-/pomelo-logger-0.1.7.tgz#b2486f9959434a636e4f385b02241e8f7c191265"
   dependencies:

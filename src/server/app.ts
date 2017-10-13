@@ -1,7 +1,6 @@
 import * as Pomelo from 'pomelo';
 import * as path from 'path';
 import { AppFacade } from './core/AppFacade';
-
 /**
  * Init a pomelo application.
  */
