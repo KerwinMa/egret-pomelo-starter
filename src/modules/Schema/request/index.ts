@@ -5,10 +5,10 @@ export default class RequestSchema {
     // STATIC
     ////////////////////////////////////////////////////////////////////////////////////////////
     public static ID: object = {
-        id: Joi.number()
-    }
+        id: Joi.number().required(),
+    };
 
     public static USER_ID: object = {
-        userId: Joi.number()
-    }
+        userId: Joi.number().required(),
+    };
 }

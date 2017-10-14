@@ -24,10 +24,14 @@ app.configure('production|development', () => {
     app.filter(Pomelo.filters.timeout());
 
     // app global errorhandler
-    app.set('errorHandler', (err: Error, msg: string, resp: any, session: any, next: Function) => {
-        console.error('============>>>>', err);
-        next('系统异常');
-    });
+    app.set('errorHandler', errorHandler);
+
+    function errorHandler(code: Error, msg: string, resp: any, session: any, next: Function) {
+        next(null, {
+            code: code || 'InternalError',
+            message: resp,
+        });
+    }
 });
 
 /*

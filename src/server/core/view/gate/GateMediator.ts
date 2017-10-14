@@ -1,20 +1,19 @@
 import * as puremvc from 'puremvc';
 import * as Pomelo from 'pomelo';
-import * as Joi from 'joi';
 
 import RequestSchema from '../../../../modules/Schema/request';
-import { validate } from '../../../../modules/Decorator/';
+import { validate, log } from '../../../../modules/Decorator/';
 
 export default class GateMediator extends puremvc.Mediator implements puremvc.IMediator {
 
-    public static instance: GateMediator = null
+    public static instance: GateMediator = null;
     public static getinstance (app:any, mediatorName?: string) {
-        if (!this.instance) this.instance = new GateMediator(app, mediatorName)
+        if (!this.instance) this.instance = new GateMediator(app, mediatorName);
         return this.instance;
     }
 
-    public app: Pomelo.Application
-    public channelService: Pomelo.ChannelService
+    public app: Pomelo.Application;
+    public channelService: Pomelo.ChannelService;
 
     public constructor (app: any, mediatorName: string) {
         super(mediatorName, app);
@@ -22,7 +21,7 @@ export default class GateMediator extends puremvc.Mediator implements puremvc.IM
         this.channelService = app.get('channelService');
     }
 
-    public listNotificationInterests(): Array<any> {
+    public listNotificationInterests(): any[] {
         return [];
     }
 
@@ -30,19 +29,17 @@ export default class GateMediator extends puremvc.Mediator implements puremvc.IM
         const notificationName = note.getName();
     }
 
-    /****************************** pomelo handler methods ***********************************/
+    // /****************************** pomelo handler methods ***********************************/
     @validate(RequestSchema.ID)
-    public queryConnector (args: any, session: any, next: any) {
+    @log(__filename)
+    public queryConnector (args: any, session: any, next: Function) {
         const connections = this.app.getServersByType('connector');
-        if (!connections || connections.length ===0) {
-            next(null, {
-                code: 500,
-                msg: 'cannot find connectors!'
-            })
-        }
+        // 暂时写死，error第一个参数应该读消息表
+        if (!connections || connections.length === 0) return next('hasNoConnector', 'cannot find connectors!');
+
         next(null, {
-            code: 200,
-            body: connections[0]
-        })
+            code: 'ok',
+            body: connections[0],
+        });
     }
 }

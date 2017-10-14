@@ -2,5 +2,5 @@ node_modules
 build/**
 src/client/bin/**
 src/client/bin-debug/**
-logs/**
+logs/*.log
 files/
