@@ -10,7 +10,7 @@
             "preLaunchTask": "TS - Compile Server",
             "console": "externalTerminal",
             "outFiles": [
-                "${workspaceFolder}/build/server/app.js"
+                "${workspaceRoot}/build/**/*.js"
             ]
         },
         {

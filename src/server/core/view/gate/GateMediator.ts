@@ -1,5 +1,9 @@
 import * as puremvc from 'puremvc';
 import * as Pomelo from 'pomelo';
+import * as Joi from 'joi';
+
+import RequestSchema from '../../../../modules/Schema/request';
+import { validate } from '../../../../modules/Decorator/';
 
 export default class GateMediator extends puremvc.Mediator implements puremvc.IMediator {
 
@@ -27,6 +31,7 @@ export default class GateMediator extends puremvc.Mediator implements puremvc.IM
     }
 
     /****************************** pomelo handler methods ***********************************/
+    @validate(RequestSchema.ID)
     public queryConnector (args: any, session: any, next: any) {
         const connections = this.app.getServersByType('connector');
         if (!connections || connections.length ===0) {

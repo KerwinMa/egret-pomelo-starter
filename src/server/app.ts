@@ -25,7 +25,8 @@ app.configure('production|development', () => {
 
     // app global errorhandler
     app.set('errorHandler', (err: Error, msg: string, resp: any, session: any, next: Function) => {
-        console.error(err);
+        console.error('============>>>>', err);
+        next('系统异常');
     });
 });
 

@@ -6,7 +6,6 @@
         "noImplicitAny": true,
         "sourceMap": true,
         "preserveConstEnums": true,
-        "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": true,
         "traceResolution": false,
