@@ -10,7 +10,7 @@ export default class StartupCommand extends puremvc.MacroCommand implements pure
 
     public initializeMacroCommand () {
         // add subSubCommand
-        this.addSubCommand( ModelPrepCommand );
-        this.addSubCommand( ViewPrepCommand );
+        this.addSubCommand(ModelPrepCommand);
+        this.addSubCommand(ViewPrepCommand);
     }
 }

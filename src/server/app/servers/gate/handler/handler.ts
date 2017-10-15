@@ -1,6 +1,3 @@
-import * as Pomelo from 'pomelo';
-import GateMediator from '../../../../core/view/gate/GateMediator';
+import MediaHandlerMap from '../../../../core/view/MediatorHandlerMap';
 
-module.exports = function (app: Pomelo.Application) {
-    return GateMediator.getinstance(app);
-};
+module.exports = MediaHandlerMap.HANDLERS['gate.handler.handler'];

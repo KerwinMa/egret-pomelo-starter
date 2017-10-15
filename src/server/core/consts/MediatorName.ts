@@ -3,5 +3,5 @@ export default class MediatorName {
     // STATIC
     ////////////////////////////////////////////////////////////////////////////////////////////
     
-    public static GateHandlerMediator: string = 'gateHandlerMediator';
+    public static GATEHANDLERMEDIATOR: string = 'gateHandlerMediator';
 }

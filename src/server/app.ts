@@ -23,6 +23,13 @@ app.configure('production|development', () => {
     app.before(Pomelo.filters.toobusy());
     app.filter(Pomelo.filters.timeout());
 
+    // app handler hot update
+    app.set('serverConfig', { reloadHandlers: true });
+
+    // app remote hot update
+    app.set('remoteConfig', { reloadRemotes: true });
+
+
     // app global errorhandler
     app.set('errorHandler', errorHandler);
 
@@ -58,10 +65,12 @@ app.configure('production|development', 'connector', () => {
     });
 });
 
-const serverId = app.getServerId();
-const appFacade = AppFacade.getInstance(serverId);
-
-appFacade.start(app);
+// start pomelo application
+app.start(() => {
+    const serverId = app.getServerId();
+    const appFacade = AppFacade.getInstance(serverId);
+    appFacade.start(app);
+});
 
 process.on('uncaughtException', (err) => {
     console.error(' Caught exception: ' + err.stack);
