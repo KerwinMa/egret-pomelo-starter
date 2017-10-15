@@ -45,11 +45,12 @@
             "args": [
                 "start",
                 "-d",
-                "./src/server"
+                "./build/server"
             ],
             "problemMatcher": [
                 "$tsc"
-            ]
+            ],
+            "isBackground": true
         }
     ]
 }

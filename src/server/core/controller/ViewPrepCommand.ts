@@ -10,7 +10,7 @@ export default class ViewPrepCommand extends puremvc.SimpleCommand {
         // pomelo application
         const app = note.getBody();
 
-        const gateMediator = GateMediator.getinstance(app, MediatorName.GateHandlerMediator)
-        this.facade.registerMediator(gateMediator)
+        const gateMediator = GateMediator.getinstance(app, MediatorName.GateHandlerMediator);
+        this.facade.registerMediator(gateMediator);
     }
 }

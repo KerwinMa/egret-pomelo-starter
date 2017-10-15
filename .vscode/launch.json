@@ -1,17 +1,51 @@
 {
     "version": "0.2.0",
     "configurations": [
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "Debug Server",
+        //     "sourceMaps": true,
+        //     "trace": false,
+        //     "program": "${workspaceRoot}/src/server/app.ts",
+        //     "protocol": "auto",
+        //     "preLaunchTask": "TS - Compile Server",
+        //     "console": "externalTerminal",
+        //     "outFiles": [
+        //         "${workspaceRoot}/build/**/*.js"
+        //     ]
+        // },
         {
             "type": "node",
-            "request": "launch",
-            "name": "Debug Server",
-            "sourceMaps": true,
-            "program": "${workspaceFolder}/src/server/app.ts",
-            "preLaunchTask": "TS - Compile Server",
-            "console": "externalTerminal",
+            "request": "attach",
+            "name": "gate-server-1",
+            "port": 9001,
             "outFiles": [
                 "${workspaceRoot}/build/**/*.js"
-            ]
+            ],
+            "preLaunchTask": "Pomelo Start"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug Connecotor Server-1",
+            "port": 9002,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/build/**/*.js"
+            ],
+            "preLaunchTask": "Pomelo Start"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug Connecotor Server-2",
+            "port": 9003,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/build/**/*.js"
+            ],
+            "preLaunchTask": "Pomelo Start"
         },
         {
             "name": "使用本机 Chrome 调试",
@@ -22,30 +56,6 @@
             "preLaunchTask": "Egret - Build",
             "userDataDir": "${tmpdir}",
             "port": 5659
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Debug Gate Server",
-            "port": 9001,
-            "sourceMaps": true,
-            "preLaunchTask": "Pomelo Start"
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Debug Connecotor Server-1",
-            "port": 9002,
-            "sourceMaps": true,
-            "preLaunchTask": "Pomelo Start"
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "name": "Debug Connecotor Server-2",
-            "port": 9003,
-            "sourceMaps": true,
-            "preLaunchTask": "Pomelo Start"
         }
     ]
 }
