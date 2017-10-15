@@ -28,8 +28,8 @@ app.configure('production|development', () => {
 
     function errorHandler(code: Error, msg: string, resp: any, session: any, next: Function) {
         next(null, {
-            code: code || 'InternalError',
-            message: resp,
+            c: code || 'InternalError',
+            m: resp,
         });
     }
 });

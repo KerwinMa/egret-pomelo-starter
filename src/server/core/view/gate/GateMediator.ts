@@ -2,7 +2,7 @@ import * as puremvc from 'puremvc';
 import * as Pomelo from 'pomelo';
 
 import RequestSchema from '../../../../modules/Schema/request';
-import { validate, log } from '../../../../modules/Decorator/';
+import { validate, log, dsTrans } from '../../../../modules/Decorator/';
 
 export default class GateMediator extends puremvc.Mediator implements puremvc.IMediator {
 
@@ -31,6 +31,7 @@ export default class GateMediator extends puremvc.Mediator implements puremvc.IM
 
     // /****************************** pomelo handler methods ***********************************/
     @validate(RequestSchema.ID)
+    @dsTrans('serverInfo')
     @log(__filename)
     public queryConnector (args: any, session: any, next: Function) {
         const connections = this.app.getServersByType('connector');
@@ -38,8 +39,8 @@ export default class GateMediator extends puremvc.Mediator implements puremvc.IM
         if (!connections || connections.length === 0) return next('hasNoConnector', 'cannot find connectors!');
 
         next(null, {
-            code: 'ok',
-            body: connections[0],
+            c: 'ok',
+            b: connections[0],
         });
     }
 }

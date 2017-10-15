@@ -1,4 +1,4 @@
-export function getLogger (categoryName: string, fileName?: string): Logger
+export function getLogger (categoryName: string, ...prefixs: any[]): Logger
 
 export interface Logger {  
     trace(message: string, ...args: any[]): void;

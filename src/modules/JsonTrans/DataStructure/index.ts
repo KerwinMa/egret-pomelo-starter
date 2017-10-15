@@ -6,8 +6,8 @@ export class DSTrans {
     private dsRule: any = {};
 
     constructor () {
-        const dsJsonFile = '../../../../shared/data/datastructure/ds.json';
-        const dsRuleFile  = '../../../../shared/data/datastructure/dsRule.json';
+        const dsJsonFile = '../../../../files/data/datastructure/ds.json';
+        const dsRuleFile  = '../../../../files/data/datastructure/dsRule.json';
         // get the dsconsts cache
         try {
             this.ds = require(dsJsonFile);
