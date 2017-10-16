@@ -38,3 +38,5 @@ app.on('error', (err: any, ctx: Koa.Context) => {
     console.log('==========>>>>>', err);
 });
 
+exports = app;
+
