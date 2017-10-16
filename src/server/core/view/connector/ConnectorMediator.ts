@@ -4,11 +4,11 @@ import * as Pomelo from 'pomelo';
 import RequestSchema from '../../../../modules/Schema/request';
 import { validate, log, dsTrans, handler, iface } from '../../../../modules/Decorator/';
 
-export default class GateMediator extends puremvc.Mediator implements puremvc.IMediator {
+export default class ConnectorMediator extends puremvc.Mediator implements puremvc.IMediator {
 
-    public static instance: GateMediator = null;
+    public static instance: ConnectorMediator = null;
     public static getinstance (app:any, mediatorName?: string) {
-        if (!this.instance) this.instance = new GateMediator(app, mediatorName);
+        if (!this.instance) this.instance = new ConnectorMediator(app, mediatorName);
         return this.instance;
     }
 
@@ -41,18 +41,15 @@ export default class GateMediator extends puremvc.Mediator implements puremvc.IM
      */
 
     // 选择一台connector服务器进行链接
-    @handler('gate.handler.handler', __filename)
-    @validate(RequestSchema.ID)
-    @dsTrans('serverInfo')
+    @handler('connector.handler.handler', __filename)
+    @validate(RequestSchema.AUTH_LOGIN)
     @log(__filename)
-    public queryConnector (args: any, session: any, next: Function) {
-        const connections = this.app.getServersByType('connector');
-        // 暂时写死，error第一个参数应该读消息表
-        if (!connections || connections.length === 0) return next('hasNoConnector', 'cannot find connectors!');
-
+    public connect (args: any, session: any, next: Function) {
         next(null, {
             c: 'ok',
-            b: connections[0],
+            b: {
+                loginKey: 'ssssssssssssss',
+            },
         });
     }
 }

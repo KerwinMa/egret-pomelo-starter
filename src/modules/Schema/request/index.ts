@@ -11,4 +11,9 @@ export default class RequestSchema {
     public static USER_ID: object = {
         userId: Joi.number().required(),
     };
+
+    public static AUTH_LOGIN: object = {
+        account: Joi.string().required(),
+        password: Joi.string().required(),
+    };
 }

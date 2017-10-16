@@ -19,7 +19,6 @@ function logDescriptor(target: any, propertyKey: string, descriptor: PropertyDes
     // log when response
     const responsetlogger = Logger.getLogger('response', fileBaseName, propertyKey);
     const fn = descriptor.value;
-
     // rewrite the descriptored function
     descriptor.value = detailLog;
 
