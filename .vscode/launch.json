@@ -48,6 +48,28 @@
             "preLaunchTask": "Pomelo Start"
         },
         {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug HttpConnector Server-1",
+            "port": 9004,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/build/**/*.js"
+            ],
+            "preLaunchTask": "Pomelo Start"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Debug HttpConnector Server-2",
+            "port": 9005,
+            "sourceMaps": true,
+            "outFiles": [
+                "${workspaceRoot}/build/**/*.js"
+            ],
+            "preLaunchTask": "Pomelo Start"
+        },
+        {
             "name": "使用本机 Chrome 调试",
             "type": "chrome",
             "request": "launch",

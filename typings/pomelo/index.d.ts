@@ -1,5 +1,4 @@
 declare module pomelo {    
-    
     /**
      * Application
      */
@@ -885,6 +884,8 @@ declare module pomelo {
     function createApp(opts?: {base: string}): Application;
     
     function timeout(): any;
+
+    export const app: Application;
 }
 
 export = pomelo;

@@ -8,7 +8,6 @@ declare module "koa-convert" {
     }
     function convert(middleware?: Middleware):Koa.Middleware;
     namespace convert {}
-    export = convert;
 }
 
 

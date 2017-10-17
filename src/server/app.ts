@@ -1,5 +1,6 @@
 import * as Pomelo from 'pomelo';
 import * as path from 'path';
+
 import { AppFacade } from './core/AppFacade';
 /**
  * Init a pomelo application.
@@ -62,6 +63,17 @@ app.configure('production|development', 'connector', () => {
         heartbeat: 3,
         useDict: true,
         useProtobuf: true,
+    });
+});
+
+/*
+*  http connector server
+*  自己封装的http connector，处理http请求，调用app内资源
+*/
+app.configure('production|development', 'httpconnector', () => {
+    app.set('connectorConfig',{
+        connector: require('./app/connector/httpconnector/').webconnector,
+        methods: 'all',
     });
 });
 

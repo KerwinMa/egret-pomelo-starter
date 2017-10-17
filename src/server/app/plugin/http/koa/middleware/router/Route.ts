@@ -49,7 +49,7 @@ export class Route {
         // 不做校验的路由集合
         const unlessPath = [];
         // 配置路由
-        for (const [config, controller] of Route.__DecoratedRouters) {
+        for (const [config, controller] of Route.decoratedRouters) {
             const controllers = Array.isArray(controller) ? controller : [controller];
             let prefixPath = config.target[symbolRoutePrefix];
             if (prefixPath && (!prefixPath.startsWith('/'))) {

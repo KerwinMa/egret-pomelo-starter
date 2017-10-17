@@ -1,4 +1,4 @@
-exports = {
+export const httpPlugin: any  = {
 
     components: __dirname + '/lib/components/',
 
