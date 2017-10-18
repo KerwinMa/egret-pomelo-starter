@@ -13,7 +13,7 @@ import Socket from './websocket';
 const app = new Koa();
 const router = new Router();
 
-let curID = 0;
+let curID = 1;
 /**
  * connector 构造
  * @param port
@@ -33,6 +33,8 @@ class Connector {
     public emit: Function;
     public msg: any;
 
+    public sessionService: pomelo.SessionService;
+
     constructor (port: number, host: string) {
         this.host = host;
         this.port = port;
@@ -40,12 +42,13 @@ class Connector {
         events.EventEmitter.call(this);
     }
 
-        /**
+    /**
      * 启动服务 ( pomelo 内置规范接口 )
      * @param cb
      */
     start (cb: Function) {
         const congigure = pomelo.app.get('connectorConfig');
+        this.sessionService = pomelo.app.get('sessionService');
 
         router.get('/',(ctx: Koa.Context, next: Koa.Middleware) => {
             return processRequest(ctx.request, ctx.response, ctx.res, this);
@@ -62,7 +65,6 @@ class Connector {
         app.use(router.allowedMethods());
 
         app.listen(this.port, () => {
-            console.log(`koa2+typescript服务启动，监听${this.port}端口`);
         });
         process.nextTick(cb);
     }
@@ -76,26 +78,26 @@ class Connector {
         process.nextTick(cb);
     }
     /**
-     * 发送消息编码,pomelo handler已经响应 已经相应 ( pomelo 内置规范接口 )
+     * 发送消息编码 ( pomelo 内置规范接口 ) pomelo handler处理完请求后返回数据
      * @type {encode}
      */
-    encode (reqId: number, route: string, msg: object) {
-        if (reqId) {
+    encode (sid: number, route: string, msg: object) {
+        if (sid) {
             // request-response 返回
             return msg;
         } else {
-            // push 返回
+            // notify-push 返回
             return JSON.stringify(msg);
         }
     }
 
     /**
-     * 收到消息解码 ( pomelo 内置规范接口 )
+     * 收到消息解码 ( pomelo 内置规范接口 ) 收到http请求后将请求体转化成pomleo的格式
      * @type {decode}
      */
     decode (msg: any) {
         return {
-            id: msg.body.curID,
+            id: msg.body.sid,
             route: msg.body.route || '',
             body: msg.body.body || {},
             type: 0,
@@ -109,7 +111,6 @@ class Connector {
      * @param msg
      */
     send (msg: any) {
-        console.log('===========>>>>>发送消息', msg);
         this.msg = msg;
     }
 }
@@ -124,9 +125,16 @@ util.inherits(Connector, events.EventEmitter);
 * @param next
 */
 function processRequest(request: any, response: any, res: any, self: Connector) {
-    const websocket = new Socket(curID++, res, response);
-    request.body.curID = curID;
-    self.emit('connection', websocket);
+    let websocket = Socket.getSocket(request.body.sid);
+    if (!websocket) {
+        websocket = new Socket(curID++, res, response);
+        Socket.socketMap[websocket.id] = websocket;
+        self.emit('connection', websocket);
+    } else {
+        websocket.res = res;
+        websocket.response = response;
+    }
+    request.body.sid = websocket.id;
     websocket.emit('message', request);
 }
 
@@ -141,6 +149,7 @@ async function getMethodParser(ctx: Koa.Context, next: Function) {
         ctx.request.body = {};
         ctx.request.body.route = ctx.request.query.route || '';
         ctx.request.body.body = ctx.request.query.body || {};
+        ctx.request.body.sid = ctx.request.query.sid || null;
     }
     await next();
 }

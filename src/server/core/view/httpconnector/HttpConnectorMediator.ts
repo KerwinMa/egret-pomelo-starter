@@ -41,7 +41,7 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
      */
 
     // 选择一台connector服务器进行链接
-    @handler('httpconnector.handler.handler', __filename)
+    @handler('httpconnector.handler.user', __filename)
     @dsTrans('serverInfo')
     @log(__filename)
     public queryConnector (args: any, session: any, next: Function) {
@@ -52,6 +52,25 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
         next(null, {
             c: 'ok',
             b: connections[0],
+        });
+    }
+
+    @handler('httpconnector.handler.user', __filename)
+    public signIn (args: any, session: any, next: Function) {
+        // 执行登录逻辑
+
+        // 绑定session
+        if (session.uid) {
+            return next(null, {
+                c: 'ok',
+            });
+        }
+        session.bind(1001);
+        session.set('serverId', this.app.getServerId());
+        session.pushAll((err: Error) => {
+            next(null, {
+                c: 'ok',
+            });
         });
     }
 }
