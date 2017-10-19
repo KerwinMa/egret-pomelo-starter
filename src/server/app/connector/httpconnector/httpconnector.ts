@@ -125,17 +125,9 @@ util.inherits(Connector, events.EventEmitter);
 * @param next
 */
 function processRequest(request: any, response: any, res: any, self: Connector) {
-    let websocket = Socket.getSocket(request.body.sid);
-    if (!websocket) {
-        const sid = uidSafe.sync(18);
-        websocket = new Socket(sid, res, response);
-        Socket.socketMap[websocket.id] = websocket;
-        self.emit('connection', websocket);
-    } else {
-        // 更新res response对象,否则第二次不会有返回值
-        websocket.res = res;
-        websocket.response = response;
-    }
+    const sid = request.body.sid || uidSafe.sync(18);
+    const websocket = new Socket(sid, res, response);
+    self.emit('connection', websocket);
     request.body.sid = websocket.id;
     websocket.emit('message', request);
 }

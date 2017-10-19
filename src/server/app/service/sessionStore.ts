@@ -16,6 +16,10 @@ export interface RedisDbConfig{
     keyPrefix?: string;
 }
 
+interface IListenerCallBack {
+    (...args: any[]) : void;
+}
+
 /**
  * Session Redis Store For SessionService
  *
@@ -29,11 +33,12 @@ export interface RedisDbConfig{
  */
 export default class RedisSessionStore {
     private redis: Redis.Redis;
+    private subscriber: Redis.Redis;
     private emit: Function;
     private on: Function;
     private setName: string = 'online';
 
-    constructor (opt?: RedisDbConfig) {
+    constructor (opt: RedisDbConfig = {}) {
         events.EventEmitter.call(this);
 
         const host = opt.host || '127.0.0.1';
@@ -41,10 +46,10 @@ export default class RedisSessionStore {
         const family = opt.family || 4;
         const password = opt.password || '';
         const db = opt.db || 0;
-        const keyPrefix = opt.keyPrefix || 'session';
+        const keyPrefix = opt.keyPrefix || 'session:';
 
         this.redis = new Redis({ host, port, family, password, db, keyPrefix });
-
+        this.subscriber = new Redis({ host, port, family, password, db, keyPrefix });
         // bind some events
         this.redis.on('error', this.emit.bind(this, 'error'));
         this.redis.on('connect', this.emit.bind(this, 'connect'));
@@ -52,12 +57,22 @@ export default class RedisSessionStore {
         this.redis.on('ready', this.emit.bind(this, 'ready'));
         this.redis.on('close', this.emit.bind(this, 'close'));
 
+        this.subscriber.on('error', this.emit.bind(this, 'error'));
+        this.subscriber.on('connect', this.emit.bind(this, 'connect'));
+        this.subscriber.on('reconnecting', this.emit.bind(this, 'reconnecting'));
+        this.subscriber.on('ready', this.emit.bind(this, 'ready'));
+        this.subscriber.on('close', this.emit.bind(this, 'close'));
+
+        // send message when subscriber got message
+        this.subscriber.on('message', this.emit.bind(this, 'message'));
+
         this.on('connect', () => {
             logger.debug('connected to redis');
         });
 
         this.on('error', () => {
             logger.debug('redis error');
+            throw new Error('redis error');
         });
 
         this.on('reconnecting', () => {
@@ -84,19 +99,53 @@ export default class RedisSessionStore {
     /**
      * get all sessions in redis
      */
-    public async getAll (): Promise<object[]> {
+    public async getAll (): Promise<object> {
         const sids = await this.redis.smembers(this.setName);
-        const sessions = sids.map((sid: string) => this.redis.hgetall(sid));
-        return Promise.all(sessions);
+        const sessions = await Promise.all(sids.map((sid: string) => this.redis.hgetall(sid)));
+        const sessionMap:any = {};
+        sids.forEach((sid: string, index: number) => {
+            sessionMap[sid] = sessions[index];
+        });
+        return sessionMap;
     }
 
     /**
-     * create (if not exit) or update a session
+     * create a session
      * @param session 
      */
-    public async set (sid: string, session: object) {
+    public async create (sid: string, session: object) {
         await this.redis.hmset(sid, session);
         await this.redis.sadd(this.setName, sid);
+    }
+
+    /**
+     * bind an uid to session
+     * @param sid 
+     */
+    public async bind (sid: string, session: any) {
+        await this.redis.hmset(sid, session);
+        this.redis.publish('sessionBind', JSON.stringify({ sid, session }));
+    }
+
+    /**
+     * unbind an uid to session
+     * @param sid 
+     */
+    public async unbind (sid: string, uid: number) {
+        await this.redis.del(sid);
+        await this.redis.srem(this.setName, sid);
+        this.redis.publish('sessionUnbind', JSON.stringify({ sid, uid }));
+    }
+
+    /**
+     * update a session with sid
+     * @param session 
+     */
+    public async update (sid: string, settings: any, uid: number) {
+        await this.redis.hmset(sid, { settings });
+        await this.redis.sadd(this.setName, sid);
+        // only publish message to other connector when session bind with a uid
+        if (uid) this.redis.publish('sessionUpdate', JSON.stringify({ sid, settings }));
     }
 
     /**
@@ -107,6 +156,7 @@ export default class RedisSessionStore {
     public async destroy (sid: string) {
         await this.redis.del(sid);
         await this.redis.srem(this.setName, sid);
+        this.redis.publish('sessionDestroy', sid);
     }
 
     /**
@@ -119,6 +169,12 @@ export default class RedisSessionStore {
         await this.redis.del(this.setName);
     }
 
+    /**
+     * subscribe some channel from redis for sync session in connectors
+     */  
+    public subscribe (...args: any[]) {
+        return this.subscriber.subscribe(...args);
+    }
 }
 
 util.inherits(RedisSessionStore, events.EventEmitter);

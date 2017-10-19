@@ -16,7 +16,7 @@ class Component {
     public app: pomelo.Application;
     public service: any;
 
-    constructor (app: pomelo.Application, opts: object = {}) {
+    constructor (app: pomelo.Application, opts: any = {}) {
         this.app = app;
         this.service = new SessionService(opts);
 
@@ -39,6 +39,5 @@ Component.prototype.name = '__session__';
 module.exports = function (app: pomelo.Application, opts: object) {
     const cmp = new Component(app, opts);
     app.set('sessionService', cmp, true);
-    console.log(app.getServerId(), '设置了重写的sessionService');
     return cmp;
 };

@@ -47,6 +47,7 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
     @validate(RequestSchema.AUTH_LOGIN, false)
     @log(__filename)
     public signIn (args: any, session: any, next: Function) {
+        console.log('===========>>>', session.uid);
         const user = {
             id: 1,
             account: '123456',

@@ -33,11 +33,139 @@ export default class SessionService {
     public singleSession: boolean;
     public sessions: ISessions;
     public uidMap: IUidMap;
+    private store: any;
 
     constructor (opts: any = {}) {
         this.singleSession = !!opts.singleSession;
-        this.sessions =  {};
+
+        // if provice a store,then init sessions and uidmap with store
+        if (!!opts.store) {
+            this.store = opts.store;
+            // this.initSessionsWithStore();
+            // this.initUidMapWithStore();
+            this.sessions =  {};
+            this.uidMap = {};
+        } else {
+            this.sessions =  {};
+            this.uidMap = {};
+        }
+
+        if (this.store) {
+            // subscribe from other connector,then sync session
+            this.store.subscribe('sessionBind', 'sessionUnbind', 'sessionUpdate', 'sessionDestroy', (err: Error, count: number) => {
+                if (err) logger.error('redis store subscribe withe err, fix it!', err.stack);
+            });
+
+            // when a session update or destroy with a uid, sync between connectors
+            this.store.on('message', (channel: string, message: any) => {
+                switch (channel) {
+                case 'sessionBind':
+                    const data = JSON.parse(message);
+                    const sid1 = data.sid;
+                    const sessionData = data.session;
+                    const session = new Session(sid1, sessionData.frontendId, {}, this, sessionData.uid, sessionData.settings);
+                    if (!this.sessions[sid1]) this.sessions[sid1] = session;
+                    const sids = this.getSidsByUid(session.uid);
+                    if (sids.indexOf(sid1) < 0) {
+                        if (!this.uidMap[session.uid]) this.uidMap[session.uid] = [];
+                        this.uidMap[session.uid].push(session);
+                    }
+                    break;
+                case 'sessionUnbind':
+                    const sid2 = message;
+                    if (this.sessions[sid2]) delete this.sessions[sid2];
+                    break;
+                case 'sessionUpdate':
+                    break;
+                case 'sessionDestroy':
+                    break;
+                }
+            });
+        }
+    }
+
+    /**
+     * get sessions back from store when system start up
+     *
+     * @return {void}
+     *
+     * @memberOf SessionService
+     * @api private
+     */
+    private async initSessionsWithStore () {
+        this.sessions = await this.store.getAll();
+    }
+
+    /**
+     * get uidmap back from store when system start up
+     *
+     * @return {void}
+     *
+     * @memberOf SessionService
+     * @api private
+     */
+    private async initUidMapWithStore () {
         this.uidMap = {};
+    }
+
+    /**
+     * when update a session, async to redis
+     * @param {String} sid uniqe id for the internal session 
+     * @param {Object} settings some value of session object
+     *  
+     * @return {void}
+     *
+     * @memberOf SessionService
+     * @api private
+     */
+    private async updateSessionInStore (sid: string, settings: any = {}, uid: number) {
+        await this.store.update(sid, settings, uid);
+    }
+
+    /**
+     * when bind a session, async to redis
+     * @param {String} sid uniqe id for the internal session 
+     * @param {Object} session
+     * 
+     * @return {void}
+     *
+     * @memberOf SessionService
+     * @api private
+     */
+    private async bindSessionInRedis (sid: string, session: any) {
+        // take some value of session sync to redis
+        const obj = {
+            uid: session.uid,
+            frontendId: session.frontendId,
+            settings: session.settings,
+        };
+        await this.store.bind(sid, obj);
+    }
+
+    /**
+     * when unbind a session, async to redis
+     * @param {String} sid uniqe id for the internal session 
+     *  
+     * @return {void}
+     *
+     * @memberOf SessionService
+     * @api private
+     */
+    private async unbindSessionInRedis (sid: string, uid: number) {
+        await this.store.unbind(sid, uid);
+    }
+
+    /**
+     * when destroy a session, sync to redis
+     * @param {String} sid uniqe id for the internal session 
+     *  
+     * @return {void}
+     *
+     * @memberOf SessionService
+     * @api private
+     */
+    private async destroySessionInStore (sid: string) {
+        await this.store.destroy(sid);
     }
 
     /**
@@ -107,8 +235,10 @@ export default class SessionService {
             }
         }
         sessions.push(session);
-        
+
         session.bind(uid);
+
+        if (this.store) this.bindSessionInRedis(sid, session);
         
         if (cb) {
             process.nextTick(cb);
@@ -154,8 +284,10 @@ export default class SessionService {
             }
         }
 
+        if (this.store) this.unbindSessionInRedis(sid, uid);
+
         session.unbind(uid);
-      
+
         if (cb) {
             process.nextTick(cb);
         }
@@ -188,6 +320,21 @@ export default class SessionService {
     }
 
     /**
+     * Get sessions ids by userId.
+     *
+     * @param {Number} uid User id associated with the session
+     * @return {Array} list of session sids binded with the uid
+     *
+     * @memberOf SessionService
+     * @api private
+     */
+    public getSidsByUid (uid: number): string[] {
+        const sessions = this.uidMap[uid] || [];
+        const sids = sessions.map(s => s.id);
+        return sids;
+    }
+
+    /**
      * Remove session by key.
      *
      * @param {Number} sid The session id
@@ -200,7 +347,9 @@ export default class SessionService {
         if (session) {
             const uid = session.uid;
             delete this.sessions[session.id];
-      
+
+            if (this.store && session.uid) this.destroySessionInStore(sid);
+
             const sessions = this.uidMap[uid];
             if (!sessions) {
                 return;
@@ -230,6 +379,9 @@ export default class SessionService {
             return;
         }
         session.set(key, value);
+
+        if (this.store && session.uid) this.updateSessionInStore(sid, session.settings, session.uid);
+
         invokeCallback(cb);
     }
     /**
@@ -248,6 +400,9 @@ export default class SessionService {
         for (const f in settings) {
             session.set(f, settings[f]);
         }
+
+        if (this.store && session.uid) this.updateSessionInStore(sid, session.settings, session.uid);
+
         invokeCallback(cb);
     }
 
@@ -462,11 +617,11 @@ class Session {
     // tslint:disable-next-line:variable-name    
     public __state__: number;
 
-    constructor (sid: string, frontendId: string, socket: any, service: SessionService) {
+    constructor (sid: string, frontendId: string, socket: any, service: SessionService, uid: any = null, settings: object = {}) {
         this.id = sid;
         this.frontendId = frontendId;
-        this.uid = null;
-        this.settings = {};
+        this.uid = uid;
+        this.settings = settings;
 
         this.__socket__ = socket;
         this.__sessionService__ = service;
@@ -547,6 +702,7 @@ class Session {
      * @param  {Object} msg final message sent to client
      */
     public send (msg: any) {
+        // 这里要分情况
         this.__socket__.send(msg);
         // if session is not binded an uid when send message, destroy it!
         if (!this.uid) this.closed('without an uid when response');

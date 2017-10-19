@@ -13,13 +13,6 @@ const ST_CLOSED = 1;
  * @auth Guofeng.Ding
  */
 export default class Socket {
-    
-    // 保存对res对象的引用
-    public static socketMap: any = {};
-    public static getSocket (sid: number) {
-        return this.socketMap[sid];
-    }
-
     public id: string;
     public state: number;
     public socket: any;
@@ -59,9 +52,6 @@ export default class Socket {
             return;
         }
         this.state = ST_CLOSED;
-
-        // 从sessionMap里删除
-        delete Socket.socketMap[this.id];
     }
 
     /**

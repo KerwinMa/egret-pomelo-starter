@@ -4,7 +4,7 @@ import StartupCommand from './controller/StartupCommand';
 
 const logger = Logger.getLogger('AppFacade', __filename);
 
-export class AppFacade extends puremvc.Facade implements puremvc.IFacade {
+export default class AppFacade extends puremvc.Facade implements puremvc.IFacade {
     public static START: string = 'start';
     public static instance: AppFacade = null;
     

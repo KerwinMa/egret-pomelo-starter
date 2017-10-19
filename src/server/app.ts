@@ -1,8 +1,10 @@
 import * as Pomelo from 'pomelo';
 import * as path from 'path';
 
-import { AppFacade } from './core/AppFacade';
 import * as sessionService from './app/component/session';
+import AppFacade from './core/AppFacade';
+import RedisSessionStore from './app/service/sessionStore';
+
 /**
  * Init a pomelo application.
  */
@@ -51,7 +53,10 @@ app.configure('production|development', () => {
 *  为所有前端服务器添加, 需要改一下pomelo源码
 */
 app.configure('production|development', () => {
-    app.load(sessionService, {});
+    app.load(sessionService, {
+        singleSession: true, // 为true代表用户同一时间只能有一个连接(即一个session,注：session在http 和 socket之间是共享的),默认为true
+        store: new RedisSessionStore(), // 提供一个储存session的介质,默认为内存,如果提供了介质则session在connector服务器间共享
+    });
 });
 
 /*
@@ -83,9 +88,10 @@ app.configure('production|development', 'connector', () => {
 *  自己封装的http connector，处理http请求，调用app内资源
 */
 app.configure('production|development', 'httpconnector', () => {
-    app.set('connectorConfig',{
+    app.set('connectorConfig', {
         connector: require('./app/connector/httpconnector/').webconnector,
-        methods: 'all',
+        heartbeat: false, // 如果提供一个值则代表开启http心跳,默认不开启
+        timeout: 120, // 多少分钟无任何请求,清理session,默认120
     });
 });
 
