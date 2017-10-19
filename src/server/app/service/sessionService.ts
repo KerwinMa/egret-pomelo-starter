@@ -29,7 +29,7 @@ interface IUidMap {
  * @class SessionService
  * @constructor
  */
-class SessionService {
+export default class SessionService {
     public singleSession: boolean;
     public sessions: ISessions;
     public uidMap: IUidMap;
@@ -52,10 +52,9 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    private create (sid: number, frontendId: string, socket: object): Session {
+    public create (sid: string, frontendId: string, socket: object): Session {
         const session = new Session(sid, frontendId, socket, this);
         this.sessions[session.id] = session;
-      
         return session;
     }
     /**
@@ -64,7 +63,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    public bind (sid: number, uid: number, cb: Function) {
+    public bind (sid: string, uid: number, cb: Function) {
         const session = this.sessions[sid];
 
         if (!session) {
@@ -122,7 +121,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    public unbind (sid: number, uid: number, cb: Function) {
+    public unbind (sid: string, uid: number, cb: Function) {
         const session = this.sessions[sid];
         
         if (!session) {
@@ -171,7 +170,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    private get (sid: number) {
+    private get (sid: string) {
         return this.sessions[sid];
     }
 
@@ -184,7 +183,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    private getByUid (uid: number) {
+    public getByUid (uid: number) {
         return this.uidMap[uid];
     }
 
@@ -196,7 +195,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    public remove (sid: number) {
+    public remove (sid: string) {
         const session = this.sessions[sid];
         if (session) {
             const uid = session.uid;
@@ -224,7 +223,7 @@ class SessionService {
      *
      * @api private
      */
-    public import (sid: number, key: any, value: any, cb: Function) {
+    public import (sid: string, key: any, value: any, cb: Function) {
         const session = this.sessions[sid];
         if (!session) {
             invokeCallback(cb, new Error('session does not exist, sid: ' + sid));
@@ -239,7 +238,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    public importAll (sid: number, settings: any, cb: Function) {
+    public importAll (sid: string, settings: any, cb: Function) {
         const session = this.sessions[sid];
         if (!session) {
             invokeCallback(cb, new Error('session does not exist, sid: ' + sid));
@@ -300,7 +299,7 @@ class SessionService {
      *
      * @memberOf SessionService
      */
-    public kickBySessionId (sid: number, reason: any, cb: Function) {
+    public kickBySessionId (sid: string, reason: any, cb: Function) {
         if (typeof reason === 'function') {
             // tslint:disable-next-line:no-param-reassign
             cb = reason;
@@ -331,7 +330,7 @@ class SessionService {
      *
      * @memberOf SessionService
      */
-    public getClientAddressBySessionId (sid: number) {
+    public getClientAddressBySessionId (sid: string) {
         const session = this.get(sid);
         if (session) {
             const socket = session.__socket__;
@@ -350,7 +349,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    private sendMessage (sid: number, msg: string) {
+    public sendMessage (sid: string, msg: string) {
         const session = this.sessions[sid];
         
         if (!session) {
@@ -370,7 +369,7 @@ class SessionService {
      * @memberOf SessionService
      * @api private
      */
-    private sendMessageByUid (uid: number, msg: string) {
+    public sendMessageByUid (uid: number, msg: string) {
         const sessions = this.uidMap[uid];
         
         if (!sessions) {
@@ -389,7 +388,7 @@ class SessionService {
      * @param  {Function} cb callback function to fetch session
      * @api private
      */
-    private forEachSession (cb: Function) {
+    public forEachSession (cb: Function) {
         for (const sid in this.sessions) {
             cb(this.sessions[sid]);
         }
@@ -401,7 +400,7 @@ class SessionService {
      * @param  {Function} cb callback function to fetch session
      * @api private
      */
-    private forEachBindedSession (cb: Function) {
+    public forEachBindedSession (cb: Function) {
         let i: number;
         let l: number;
         let sessions: Session[];
@@ -449,7 +448,7 @@ function send(service: SessionService, session: Session, msg: string) {
 class Session {
     [key: string]: any;
 
-    public id: number;
+    public id: string;
     public frontendId: string;
     public uid: number;
     public settings: any;
@@ -463,7 +462,7 @@ class Session {
     // tslint:disable-next-line:variable-name    
     public __state__: number;
 
-    constructor (sid: number, frontendId: string, socket: any, service: SessionService) {
+    constructor (sid: string, frontendId: string, socket: any, service: SessionService) {
         this.id = sid;
         this.frontendId = frontendId;
         this.uid = null;
@@ -549,6 +548,8 @@ class Session {
      */
     public send (msg: any) {
         this.__socket__.send(msg);
+        // if session is not binded an uid when send message, destroy it!
+        if (!this.uid) this.closed('without an uid when response');
     }
 
     /**
@@ -585,7 +586,7 @@ class Session {
  * Frontend session for frontend server.
  */
 class FrontendSession {
-    public id: number;
+    public id: string;
     public frontendId: string;
     public uid: number;
     public settings: any; 

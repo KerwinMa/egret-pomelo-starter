@@ -11,6 +11,7 @@
     "@types/glob": "^5.0.33",
     "@types/ioredis": "^0.0.25",
     "@types/joi": "^10.4.3",
+    "@types/jsonwebtoken": "^7.2.3",
     "@types/kcors": "^2.2.1",
     "@types/koa": "^2.0.39",
     "@types/koa-compress": "^2.0.7",
@@ -24,10 +25,12 @@
     "@types/nconf": "^0.0.34",
     "@types/random-js": "^1.0.30",
     "@types/sequelize": "^4.0.76",
+    "@types/uid-safe": "^2.1.1",
     "@types/xlsx": "^0.0.36",
     "bluebird": "^3.5.1",
     "ioredis": "^3.1.4",
     "joi": "^11.3.4",
+    "jsonwebtoken": "^8.1.0",
     "kcors": "^2.2.1",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
@@ -47,6 +50,7 @@
     "puremvc": "^1.0.4",
     "random-js": "^1.0.8",
     "sequelize": "^4.13.8",
+    "uid-safe": "^2.1.5",
     "xlsx": "^0.11.5"
   },
   "devDependencies": {

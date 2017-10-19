@@ -1,0 +1,6 @@
+{
+    "JWT": {
+        "EXPIRESIN": 3600,
+        "JWT_SECRET": "JWT_SECRET"
+    }
+}

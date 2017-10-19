@@ -1,6 +1,8 @@
 import * as puremvc from 'puremvc';
 import * as Pomelo from 'pomelo';
+import * as jwt from 'jsonwebtoken';
 
+import MsgCode from '../../consts/MsgCode';
 import RequestSchema from '../../../../modules/Schema/request';
 import { validate, log, dsTrans, handler, iface } from '../../../../modules/Decorator/';
 
@@ -40,36 +42,51 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
      * @param log 自定义的log函数，每一次请求都打印了转换后的 请求、响应的详细信息
      */
 
-    // 选择一台connector服务器进行链接
+    // 用户登录,发放token供连接服务器使用
     @handler('httpconnector.handler.user', __filename)
-    @dsTrans('serverInfo')
+    @validate(RequestSchema.AUTH_LOGIN, false)
     @log(__filename)
-    public queryConnector (args: any, session: any, next: Function) {
-        const connections = this.app.getServersByType('connector');
-        // 暂时写死，error第一个参数应该读消息表
-        if (!connections || connections.length === 0) return next('hasNoConnector', 'cannot find connectors!');
-
+    public signIn (args: any, session: any, next: Function) {
+        const user = {
+            id: 1,
+            account: '123456',
+            password: '123456',
+        };
+        const account = args.account;
+        const password = args.password;
+        if (user.account !== account) return next(MsgCode.LOGIN_NO_USER, 'has no user found');
+        if (user.password !== password) return next(MsgCode.LOGIN_PWD_NOT_CORRECT, 'password not correct');
+        // auth success,send jwt token
+        const systemConfig = this.app.get('systemConfig');
+        const token = jwt.sign({ uid: user.id }, systemConfig.JWT.JWT_SECRET);
+        // 执行登录逻辑
         next(null, {
-            c: 'ok',
-            b: connections[0],
+            b: {
+                token,
+            },
+            c: MsgCode.SUCCESS,
         });
     }
 
+    // 用户连接服务器,绑定session
     @handler('httpconnector.handler.user', __filename)
-    public signIn (args: any, session: any, next: Function) {
-        // 执行登录逻辑
+    @validate(RequestSchema.AUTH_CONNECT, false)
+    @log(__filename)
+    public connect (args: any, session: any, next: Function) {
+        const token = args.token;
+        const systemConfig = this.app.get('systemConfig');
 
-        // 绑定session
-        if (session.uid) {
-            return next(null, {
-                c: 'ok',
-            });
-        }
-        session.bind(1001);
-        session.set('serverId', this.app.getServerId());
-        session.pushAll((err: Error) => {
+        jwt.verify(token, systemConfig.JWT.JWT_SECRET, (err: Error, decoded: any) => {
+            if (err) return next(MsgCode.AUTH_FAIL, '验证失败');
+
+            // token verify success, bind the uid to session
+            const uid = decoded.uid;
+            session.bind(uid);
             next(null, {
-                c: 'ok',
+                c: MsgCode.SUCCESS,
+                b: {
+                    sid: session.id,
+                },
             });
         });
     }

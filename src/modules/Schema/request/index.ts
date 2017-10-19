@@ -15,5 +15,10 @@ export default class RequestSchema {
     public static AUTH_LOGIN: object = {
         account: Joi.string().required(),
         password: Joi.string().required(),
+        token: Joi.string(),
+    };
+
+    public static AUTH_CONNECT: object = {
+        token: Joi.string().required(),
     };
 }

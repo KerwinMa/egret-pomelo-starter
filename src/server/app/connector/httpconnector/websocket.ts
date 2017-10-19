@@ -13,20 +13,21 @@ const ST_CLOSED = 1;
  * @auth Guofeng.Ding
  */
 export default class Socket {
-
+    
+    // 保存对res对象的引用
     public static socketMap: any = {};
     public static getSocket (sid: number) {
         return this.socketMap[sid];
     }
 
-    public id: number;
+    public id: string;
     public state: number;
     public socket: any;
     public response: any;
     public remoteAddress: string;
     public emit: Function;
     
-    constructor (id: number, res: any, response: any) {
+    constructor (id: string, res: any, response: any) {
         events.EventEmitter.call(this);
 
         this.id = id;
@@ -37,7 +38,7 @@ export default class Socket {
          /**
          * 当http response对象主动关闭的时候 触发断开连接
          */
-        // this.socket.on('close',this.emit.bind(this,'disconnect'));
+        this.socket.on('close',this.emit.bind(this,'disconnect'));
 
         // /**
         //  * 当http response 对象有错误信息的时候把该错误转发给本socket(意味着转发给pomelo内部处理)
@@ -58,6 +59,9 @@ export default class Socket {
             return;
         }
         this.state = ST_CLOSED;
+
+        // 从sessionMap里删除
+        delete Socket.socketMap[this.id];
     }
 
     /**

@@ -7,13 +7,13 @@ import * as url from 'url';
 import * as koaBody from 'koa-body';
 import * as querystring from 'querystring';
 import * as Router from 'koa-router';
+import * as uidSafe from 'uid-safe';
 
 import Socket from './websocket';
 
 const app = new Koa();
 const router = new Router();
 
-let curID = 1;
 /**
  * connector 构造
  * @param port
@@ -127,10 +127,12 @@ util.inherits(Connector, events.EventEmitter);
 function processRequest(request: any, response: any, res: any, self: Connector) {
     let websocket = Socket.getSocket(request.body.sid);
     if (!websocket) {
-        websocket = new Socket(curID++, res, response);
+        const sid = uidSafe.sync(18);
+        websocket = new Socket(sid, res, response);
         Socket.socketMap[websocket.id] = websocket;
         self.emit('connection', websocket);
     } else {
+        // 更新res response对象,否则第二次不会有返回值
         websocket.res = res;
         websocket.response = response;
     }

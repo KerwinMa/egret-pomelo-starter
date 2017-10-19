@@ -27,9 +27,9 @@ export default class UserProxy extends puremvc.Proxy implements puremvc.IProxy {
         const users: UserVO[] = this.getUsers();
         for (let i: number = 0; i++; i < users.length) {
             if (users[i].id === id) {
-                return users[i]
+                return users[i];
             }
         }
-        return null
+        return null;
     } 
 }

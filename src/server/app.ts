@@ -2,6 +2,7 @@ import * as Pomelo from 'pomelo';
 import * as path from 'path';
 
 import { AppFacade } from './core/AppFacade';
+import * as sessionService from './app/component/session';
 /**
  * Init a pomelo application.
  */
@@ -20,6 +21,9 @@ process.env.NODE_ENV = env;
 *  全局设置
 */
 app.configure('production|development', () => {
+    // load system config for all server
+    app.loadConfig('systemConfig', path.join(app.getBase(), '../../config/development/system.json'));
+
     // app global filter
     app.before(Pomelo.filters.toobusy());
     app.filter(Pomelo.filters.timeout());
@@ -40,6 +44,14 @@ app.configure('production|development', () => {
             m: resp,
         });
     }
+});
+
+/*
+*  rewrited sessionService for pomelo
+*  为所有前端服务器添加, 需要改一下pomelo源码
+*/
+app.configure('production|development', () => {
+    app.load(sessionService, {});
 });
 
 /*
