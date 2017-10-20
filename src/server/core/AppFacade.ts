@@ -33,5 +33,7 @@ export default class AppFacade extends puremvc.Facade implements puremvc.IFacade
         this.sendNotification(AppFacade.START, app);
         this.removeCommand(AppFacade.START); // PureMVC初始化完成，注销STARUP命令
         logger.info(`pureMvc appfacade start up in ${AppFacade.instance.multitonKey}...`);
+
+        app.start();
     }
 }

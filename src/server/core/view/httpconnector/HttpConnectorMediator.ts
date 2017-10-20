@@ -9,7 +9,7 @@ import { validate, log, dsTrans, handler, iface } from '../../../../modules/Deco
 export default class HttpConnectorMediator extends puremvc.Mediator implements puremvc.IMediator {
 
     public static instance: HttpConnectorMediator = null;
-    public static getinstance (app:any, mediatorName?: string) {
+    public static getinstance(app: any, mediatorName?: string) {
         if (!this.instance) this.instance = new HttpConnectorMediator(app, mediatorName);
         return this.instance;
     }
@@ -17,7 +17,7 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
     public app: Pomelo.Application;
     public channelService: Pomelo.ChannelService;
 
-    public constructor (app: any, mediatorName: string) {
+    public constructor(app: any, mediatorName: string) {
         super(mediatorName, app);
 
         this.app = app;
@@ -46,7 +46,7 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
     @handler('httpconnector.handler.user', __filename)
     @validate(RequestSchema.AUTH_LOGIN, false)
     @log(__filename)
-    public signIn (args: any, session: any, next: Function) {
+    public signIn(args: any, session: any, next: Function) {
         console.log('===========>>>', session.uid);
         const user = {
             id: 1,
@@ -72,8 +72,7 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
     // 用户连接服务器,绑定session
     @handler('httpconnector.handler.user', __filename)
     @validate(RequestSchema.AUTH_CONNECT, false)
-    @log(__filename)
-    public connect (args: any, session: any, next: Function) {
+    public connect(args: any, session: any, next: Function) {
         const token = args.token;
         const systemConfig = this.app.get('systemConfig');
 
@@ -82,12 +81,15 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
 
             // token verify success, bind the uid to session
             const uid = decoded.uid;
-            session.bind(uid);
-            next(null, {
-                c: MsgCode.SUCCESS,
-                b: {
-                    sid: session.id,
-                },
+            session.bind(uid, (err: Error) => {
+                if (err) return next(MsgCode.CONNECT_FAIL, err.message);
+                console.log('========================>>>>>');
+                next(null, {
+                    c: MsgCode.SUCCESS,
+                    b: {
+                        sid: session.id,
+                    },
+                });
             });
         });
     }

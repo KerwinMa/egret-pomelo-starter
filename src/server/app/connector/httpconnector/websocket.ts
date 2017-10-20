@@ -60,6 +60,7 @@ export default class Socket {
      * @param msg
      */
     send(msg: object) {
+        this.response.status = 200;
         this.response.body = msg;
     }
 }

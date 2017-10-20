@@ -95,12 +95,16 @@ app.configure('production|development', 'httpconnector', () => {
     });
 });
 
-// start pomelo application
-app.start(() => {
-    const serverId = app.getServerId();
-    const appFacade = AppFacade.getInstance(serverId);
-    appFacade.start(app);
+app.configure('production|development', 'session', () => {
+
 });
+
+// start puremvc application
+const serverId = app.getServerId();
+const appFacade = AppFacade.getInstance(serverId);
+
+appFacade.start(app);
+
 
 process.on('uncaughtException', (err) => {
     console.error(' Caught exception: ' + err.stack);

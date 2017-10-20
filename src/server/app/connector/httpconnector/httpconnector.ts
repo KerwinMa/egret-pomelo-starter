@@ -61,6 +61,13 @@ class Connector {
         app.use(koaBody());
         app.use(getMethodParser);
         app.use(kcors());
+        app.use(async (ctx: Koa.Context, next: any) => {
+            try {
+                await next();
+            } catch (err) {
+                console.error(err);
+            }
+        });
         app.use(router.routes());
         app.use(router.allowedMethods());
 
