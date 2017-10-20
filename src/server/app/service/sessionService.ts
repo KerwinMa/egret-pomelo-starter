@@ -52,35 +52,35 @@ export default class SessionService {
 
         if (this.store) {
             // subscribe from other connector,then sync session
-            this.store.subscribe('sessionBind', 'sessionUnbind', 'sessionUpdate', 'sessionDestroy', (err: Error, count: number) => {
-                if (err) logger.error('redis store subscribe withe err, fix it!', err.stack);
-            });
+            // this.store.subscribe('sessionBind', 'sessionUnbind', 'sessionUpdate', 'sessionDestroy', (err: Error, count: number) => {
+            //     if (err) logger.error('redis store subscribe withe err, fix it!', err.stack);
+            // });
 
-            // when a session update or destroy with a uid, sync between connectors
-            this.store.on('message', (channel: string, message: any) => {
-                switch (channel) {
-                case 'sessionBind':
-                    const data = JSON.parse(message);
-                    const sid1 = data.sid;
-                    const sessionData = data.session;
-                    const session = new Session(sid1, sessionData.frontendId, {}, this, sessionData.uid, sessionData.settings);
-                    if (!this.sessions[sid1]) this.sessions[sid1] = session;
-                    const sids = this.getSidsByUid(session.uid);
-                    if (sids.indexOf(sid1) < 0) {
-                        if (!this.uidMap[session.uid]) this.uidMap[session.uid] = [];
-                        this.uidMap[session.uid].push(session);
-                    }
-                    break;
-                case 'sessionUnbind':
-                    const sid2 = message;
-                    if (this.sessions[sid2]) delete this.sessions[sid2];
-                    break;
-                case 'sessionUpdate':
-                    break;
-                case 'sessionDestroy':
-                    break;
-                }
-            });
+            // // when a session update or destroy with a uid, sync between connectors
+            // this.store.on('message', (channel: string, message: any) => {
+            //     switch (channel) {
+            //     case 'sessionBind':
+            //         const data = JSON.parse(message);
+            //         const sid1 = data.sid;
+            //         const sessionData = data.session;
+            //         const session = new Session(sid1, sessionData.frontendId, {}, this, sessionData.uid, sessionData.settings);
+            //         if (!this.sessions[sid1]) this.sessions[sid1] = session;
+            //         const sids = this.getSidsByUid(session.uid);
+            //         if (sids.indexOf(sid1) < 0) {
+            //             if (!this.uidMap[session.uid]) this.uidMap[session.uid] = [];
+            //             this.uidMap[session.uid].push(session);
+            //         }
+            //         break;
+            //     case 'sessionUnbind':
+            //         const sid2 = message;
+            //         if (this.sessions[sid2]) delete this.sessions[sid2];
+            //         break;
+            //     case 'sessionUpdate':
+            //         break;
+            //     case 'sessionDestroy':
+            //         break;
+            //     }
+            // });
         }
     }
 

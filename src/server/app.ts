@@ -95,10 +95,6 @@ app.configure('production|development', 'httpconnector', () => {
     });
 });
 
-app.configure('production|development', 'session', () => {
-
-});
-
 // start puremvc application
 const serverId = app.getServerId();
 const appFacade = AppFacade.getInstance(serverId);
