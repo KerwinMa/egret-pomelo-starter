@@ -26,7 +26,7 @@ function validateDescriptor(target: any, name: string, descriptor: PropertyDescr
         }
 
         const { error, value } = Joi.validate(convertArgs, schema);
-        if (error) return next(error.name, error.message);
+        if (error && next) return next(error.name, error.message);
         arguments[0] = value;
 
         return fn.apply(this, arguments);

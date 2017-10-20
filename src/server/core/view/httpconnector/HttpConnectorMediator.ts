@@ -43,7 +43,7 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
      */
 
     // 用户登录,发放token供连接服务器使用
-    @handler('httpconnector.handler.user', __filename)
+    @handler('httpconnector.handler.userHandler', __filename)
     @validate(RequestSchema.AUTH_LOGIN, false)
     @log(__filename)
     public signIn(args: any, session: any, next: Function) {
@@ -69,21 +69,19 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
         });
     }
 
-    // 用户连接服务器,绑定session
-    @handler('httpconnector.handler.user', __filename)
+    // 用户连接服务器
+    @handler('httpconnector.handler.userHandler', __filename)
     @validate(RequestSchema.AUTH_CONNECT, false)
+    @log(__filename)
     public connect(args: any, session: any, next: Function) {
         const token = args.token;
-        const systemConfig = this.app.get('systemConfig');
-
-        jwt.verify(token, systemConfig.JWT.JWT_SECRET, (err: Error, decoded: any) => {
-            if (err) return next(MsgCode.AUTH_FAIL, '验证失败');
-
-            // token verify success, bind the uid to session
+        this.app.rpc.auth.authRemote.auth(session, token, (err: Error, decoded: any) => {
+            if (err) return next(MsgCode.AUTH_FAIL, err.message);
+            
             const uid = decoded.uid;
             session.bind(uid, (err: Error) => {
                 if (err) return next(MsgCode.CONNECT_FAIL, err.message);
-                console.log('========================>>>>>');
+
                 next(null, {
                     c: MsgCode.SUCCESS,
                     b: {

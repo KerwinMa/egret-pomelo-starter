@@ -95,6 +95,14 @@ app.configure('production|development', 'httpconnector', () => {
     });
 });
 
+/*
+*  auth server
+*  提供token以及三方登录验证的服务器
+*/
+app.configure('production|development', 'auth', () => {
+
+});
+
 // start puremvc application
 const serverId = app.getServerId();
 const appFacade = AppFacade.getInstance(serverId);
