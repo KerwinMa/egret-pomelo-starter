@@ -20,6 +20,7 @@ function validateDescriptor(target: any, name: string, descriptor: PropertyDescr
 
     function validateSchema(args: any, session: any, next: Function) {
         // convert request schema before valite
+        if (args.__route__) delete args['__route__'];
         let convertArgs = args;
         if (convert) {
             convertArgs = convertShema(args, schema);

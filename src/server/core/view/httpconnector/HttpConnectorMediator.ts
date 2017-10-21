@@ -42,10 +42,10 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
      * @param log 自定义的log函数，每一次请求都打印了转换后的 请求、响应的详细信息
      */
 
-    // // 用户登录,发放token供连接服务器使用
-    // @handler('httpconnector.handler.userHandler', __filename)
-    // @validate(RequestSchema.AUTH_LOGIN, false)
-    // @log(__filename)
+    // 用户登录,发放token供连接服务器使用
+    @handler('httpconnector.handler.userHandler', __filename)
+    @validate(RequestSchema.AUTH_LOGIN, false)
+    @log(__filename)
     public signIn(args: any, session: any, next: Function) {
         const user = {
             id: 1,
@@ -69,10 +69,10 @@ export default class HttpConnectorMediator extends puremvc.Mediator implements p
         });
     }
 
-    // // // 用户连接服务器
-    // @handler('httpconnector.handler.userHandler', __filename)
-    // @validate(RequestSchema.AUTH_CONNECT, false)
-    // @log(__filename)
+    // // 用户连接服务器
+    @handler('httpconnector.handler.userHandler', __filename)
+    @validate(RequestSchema.AUTH_CONNECT, false)
+    @log(__filename)
     public connect(args: any, session: any, next: Function) {
         const token = args.token;
         this.app.rpc.auth.authRemote.auth(session, token, (err: Error, decoded: any) => {

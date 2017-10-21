@@ -52,35 +52,81 @@ export default class SessionService {
 
         if (this.store) {
             // subscribe from other connector,then sync session
-            // this.store.subscribe('sessionBind', 'sessionUnbind', 'sessionUpdate', 'sessionDestroy', (err: Error, count: number) => {
-            //     if (err) logger.error('redis store subscribe withe err, fix it!', err.stack);
-            // });
+            this.store.subscribe('sessionBind', 'sessionUnbind', 'sessionUpdate', 'sessionDestroy', (err: Error, count: number) => {
+                if (err) logger.error('redis store subscribe withe err, fix it!', err.stack);
+            });
 
-            // // when a session update or destroy with a uid, sync between connectors
-            // this.store.on('message', (channel: string, message: any) => {
-            //     switch (channel) {
-            //     case 'sessionBind':
-            //         const data = JSON.parse(message);
-            //         const sid1 = data.sid;
-            //         const sessionData = data.session;
-            //         const session = new Session(sid1, sessionData.frontendId, {}, this, sessionData.uid, sessionData.settings);
-            //         if (!this.sessions[sid1]) this.sessions[sid1] = session;
-            //         const sids = this.getSidsByUid(session.uid);
-            //         if (sids.indexOf(sid1) < 0) {
-            //             if (!this.uidMap[session.uid]) this.uidMap[session.uid] = [];
-            //             this.uidMap[session.uid].push(session);
-            //         }
-            //         break;
-            //     case 'sessionUnbind':
-            //         const sid2 = message;
-            //         if (this.sessions[sid2]) delete this.sessions[sid2];
-            //         break;
-            //     case 'sessionUpdate':
-            //         break;
-            //     case 'sessionDestroy':
-            //         break;
-            //     }
-            // });
+            // when a session update or destroy with a uid, sync between connectors
+            this.store.on('message', (channel: string, message: any) => {
+                const data = JSON.parse(message);
+                let sid;
+                let uid;
+                let sessionData;
+                let settings;
+                let sess: Session;
+                switch (channel) {
+                case 'sessionBind':
+                    sid = data.sid;
+                    sessionData = data.session;
+                    const session = new Session(sid, sessionData.frontendId, {}, this, sessionData.uid, sessionData.settings);
+                    if (!this.sessions[sid]) this.sessions[sid] = session;
+                    const sids = this.getSidsByUid(session.uid);
+                    if (sids.indexOf(sid) < 0) {
+                        if (!this.uidMap[session.uid]) this.uidMap[session.uid] = [];
+                        this.uidMap[session.uid].push(session);
+                    }
+                    break;
+                case 'sessionUnbind':
+                    sid = data.sid;
+                    uid = data.uid;
+                    if (this.sessions[sid]) delete this.sessions[sid];
+
+                    const sessions = this.uidMap[uid];
+                    if (sessions) {
+                        for (let i = 0, l = sessions.length; i < l; i++) {
+                            sess = sessions[i];
+                            if (sess.id === sid) {
+                                sessions.splice(i, 1);
+                                break;
+                            }
+                        }
+            
+                        if (sessions.length === 0) {
+                            delete this.uidMap[uid];
+                        }
+                    }
+                    break;
+                case 'sessionUpdate':
+                    sid = data.sid;
+                    settings = data.settings;
+                    sess = this.sessions[sid];
+                    for (const f in settings) {
+                        sess.set(f, settings[f]);
+                    }
+                    break;
+                case 'sessionDestroy':
+                    sid = data.sid;
+                    sess = this.sessions[sid];
+                    if (sess) {
+                        const uid = sess.uid;
+                        delete this.sessions[sess.id];
+                        const sessions = this.uidMap[uid];
+                        if (!sessions) {
+                            return;
+                        }
+                        for (let i = 0, l = sessions.length; i < l; i++) {
+                            if (sessions[i].id === sid) {
+                                sessions.splice(i, 1);
+                                if (sessions.length === 0) {
+                                    delete this.uidMap[uid];
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            });
         }
     }
 
@@ -135,6 +181,7 @@ export default class SessionService {
     private async bindSessionInRedis (sid: string, session: any) {
         // take some value of session sync to redis
         const obj = {
+            id: sid,
             uid: session.uid,
             frontendId: session.frontendId,
             settings: session.settings,

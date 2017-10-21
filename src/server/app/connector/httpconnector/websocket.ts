@@ -39,9 +39,7 @@ export default class Http {
         /**
          * 当 http response 对象完成后 触发断开连接(转发给pomelo内部处理session断开)
          */
-        this.response.on('finish', () => {
-            console.log('response finish==========================>>>>>>');
-        });
+        this.response.on('finish', () => {});
     }
 
     /**

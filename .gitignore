@@ -3,4 +3,5 @@ build/**
 src/client/bin/**
 src/client/bin-debug/**
 logs/*.log
+logs/*.log.*
 files/
