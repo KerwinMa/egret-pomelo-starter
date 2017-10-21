@@ -99,14 +99,9 @@ export default class RedisSessionStore {
     /**
      * get all sessions in redis
      */
-    public async getAll (): Promise<object> {
+    public async getAll (): Promise<object[]> {
         const sids = await this.redis.smembers(this.setName);
-        const sessions = await Promise.all(sids.map((sid: string) => this.redis.hgetall(sid)));
-        const sessionMap:any = {};
-        sids.forEach((sid: string, index: number) => {
-            sessionMap[sid] = sessions[index];
-        });
-        return sessionMap;
+        return await Promise.all(sids.map((sid: string) => this.redis.hgetall(sid)));
     }
 
     /**
@@ -124,6 +119,7 @@ export default class RedisSessionStore {
      */
     public async bind (sid: string, session: any) {
         await this.redis.hmset(sid, session);
+        await this.redis.sadd(this.setName, sid);
         this.redis.publish('sessionBind', JSON.stringify({ sid, session }));
     }
 

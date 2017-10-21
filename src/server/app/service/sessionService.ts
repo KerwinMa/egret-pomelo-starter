@@ -41,10 +41,7 @@ export default class SessionService {
         // if provice a store,then init sessions and uidmap with store
         if (!!opts.store) {
             this.store = opts.store;
-            // this.initSessionsWithStore();
-            // this.initUidMapWithStore();
-            this.sessions =  {};
-            this.uidMap = {};
+            this.initSessionsWithStore();
         } else {
             this.sessions =  {};
             this.uidMap = {};
@@ -139,19 +136,15 @@ export default class SessionService {
      * @api private
      */
     private async initSessionsWithStore () {
-        this.sessions = await this.store.getAll();
-    }
-
-    /**
-     * get uidmap back from store when system start up
-     *
-     * @return {void}
-     *
-     * @memberOf SessionService
-     * @api private
-     */
-    private async initUidMapWithStore () {
+        this.sessions = {};
         this.uidMap = {};
+        const sessions = await this.store.getAll();
+        sessions.forEach((s: any) => {
+            s.settings = JSON.parse(s.settings);
+            this.sessions[s.id] = new Session(s.id, s.frontendId, {}, this, s.uid, s.settings);
+            if (!this.uidMap[s.uid]) this.uidMap[s.uid] = [];
+            this.uidMap[s.uid].push(this.sessions[s.id]);
+        });
     }
 
     /**
@@ -184,7 +177,7 @@ export default class SessionService {
             id: sid,
             uid: session.uid,
             frontendId: session.frontendId,
-            settings: session.settings,
+            settings: JSON.stringify(session.settings),
         };
         await this.store.bind(sid, obj);
     }
