@@ -1,18 +1,15 @@
 import * as util from 'util';
 import * as events from 'events';
 import * as pomelo from 'pomelo';
-import * as Koa from 'koa';
-import * as kcors from 'kcors';
-import * as url from 'url';
-import * as koaBody from 'koa-body';
-import * as querystring from 'querystring';
-import * as Router from 'koa-router';
 import * as uidSafe from 'uid-safe';
+import * as http from 'http';
+import * as express from 'express';
+import * as Logger from 'pomelo-logger';
 
-import Socket from './websocket';
+import Http from './websocket';
 
-const app = new Koa();
-const router = new Router();
+const exp = express();
+const logger = Logger.getLogger('httpconnector', __filename);
 
 /**
  * connector 构造
@@ -50,28 +47,16 @@ class Connector {
         const congigure = pomelo.app.get('connectorConfig');
         this.sessionService = pomelo.app.get('sessionService');
 
-        router.get('/',(ctx: Koa.Context, next: Koa.Middleware) => {
-            return processRequest(ctx.request, ctx.response, ctx.res, this);
+        http.createServer(exp).listen(this.port, () => {
+            logger.debug('http connector is listening on', this.port);
         });
 
-        router.post('/',(ctx: Koa.Context, next: Koa.Middleware) => {
-            return processRequest(ctx.request, ctx.response, ctx.res, this);
+        exp.use(getMethodParser);
+        exp.post('*',(request: any, response: any) => {
+            return processRequest(request, response, this);
         });
-
-        app.use(koaBody());
-        app.use(getMethodParser);
-        app.use(kcors());
-        app.use(async (ctx: Koa.Context, next: any) => {
-            try {
-                await next();
-            } catch (err) {
-                console.error(err);
-            }
-        });
-        app.use(router.routes());
-        app.use(router.allowedMethods());
-
-        app.listen(this.port, () => {
+        exp.get('*',(request: any, response: any) => {
+            return processRequest(request, response, this);
         });
         process.nextTick(cb);
     }
@@ -103,6 +88,8 @@ class Connector {
      * @type {decode}
      */
     decode (msg: any) {
+        // get请求的body可能为string
+        if (typeof msg.body.body === 'string') msg.body.body = JSON.parse(msg.body.body);
         return {
             id: msg.body.sid,
             route: msg.body.route || '',
@@ -131,28 +118,28 @@ util.inherits(Connector, events.EventEmitter);
 * @param next
 * @param next
 */
-function processRequest(request: any, response: any, res: any, self: Connector) {
-    const sid = request.body.sid || uidSafe.sync(18);
-    const websocket = new Socket(sid, res, response);
-    self.emit('connection', websocket);
-    request.body.sid = websocket.id;
-    websocket.emit('message', request);
+function processRequest(request: any, response: any, self: Connector) {
+    const sid = request.query.sid || uidSafe.sync(18);
+    const http = new Http(sid, response);
+    self.emit('connection', http);
+    request.body.sid = http.id;
+    http.emit('message', request);
 }
 
 /**
-* 如果请求是get，转换查询参数到body,供pomelo使用
+* express 中间件,处理request参数
 * @param ctx
 * @param next
 * @param next
 */
-async function getMethodParser(ctx: Koa.Context, next: Function) {
-    if (ctx.method === 'GET') {
-        ctx.request.body = {};
-        ctx.request.body.route = ctx.request.query.route || '';
-        ctx.request.body.body = ctx.request.query.body || {};
-        ctx.request.body.sid = ctx.request.query.sid || null;
+function getMethodParser(request: any, response: any, next: Function) {
+    if (request.method === 'GET') {
+        request.body = {};
+        request.body.route = request.query.route || '';
+        request.body.body = request.query.body || {};
+        request.body.sid = request.query.sid || null;
     }
-    await next();
+    next();
 }
 
 /**

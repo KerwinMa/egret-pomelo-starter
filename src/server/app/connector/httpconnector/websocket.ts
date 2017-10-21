@@ -9,39 +9,39 @@ const ST_CLOSED = 1;
  * 构造
  *  每当有http请求的时候 都会构造本socket给pomelo用(pomelo用来创建session)
  * @param id    服务端对请求编号
- * @param socket http 的 response 对象
+ * @param response http 的 response 对象
  * @auth Guofeng.Ding
  */
-export default class Socket {
+export default class Http {
     public id: string;
     public state: number;
-    public socket: any;
     public response: any;
     public remoteAddress: string;
     public emit: Function;
     
-    constructor (id: string, res: any, response: any) {
+    constructor (id: string, response: any) {
         events.EventEmitter.call(this);
 
         this.id = id;
-        this.socket = res;
         this.response = response;
         this.state = ST_INITED;
-        this.remoteAddress = res.connection.remoteAddress;
+        this.remoteAddress = response.connection.remoteAddress;
          /**
          * 当http response对象主动关闭的时候 触发断开连接
          */
-        this.socket.on('close',this.emit.bind(this,'disconnect'));
+        this.response.on('close',this.emit.bind(this,'disconnect'));
 
-        // /**
-        //  * 当http response 对象有错误信息的时候把该错误转发给本socket(意味着转发给pomelo内部处理)
-        //  */
-        // this.socket.on('error',this.emit.bind(this,'error'));
+        /**
+         * 当http response 对象有错误信息的时候把该错误转发给本socket(意味着转发给pomelo内部处理)
+         */
+        this.response.on('error',this.emit.bind(this,'error'));
 
-        // /**
-        //  * 当 http response 对象完成后 触发断开连接(转发给pomelo内部处理session断开)
-        //  */
-        // this.socket.on('finish',this.emit.bind(this,'disconnect'));
+        /**
+         * 当 http response 对象完成后 触发断开连接(转发给pomelo内部处理session断开)
+         */
+        this.response.on('finish', () => {
+            console.log('response finish==========================>>>>>>');
+        });
     }
 
     /**
@@ -60,9 +60,8 @@ export default class Socket {
      * @param msg
      */
     send(msg: object) {
-        this.response.status = 200;
-        this.response.body = msg;
+        this.response.send(msg);
     }
 }
 
-util.inherits(Socket, events.EventEmitter);
+util.inherits(Http, events.EventEmitter);
