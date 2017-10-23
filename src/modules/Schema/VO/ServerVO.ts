@@ -12,5 +12,5 @@ export default class ServerVO {
     /**
      * password by md5 of the server.
     */
-    port: number
+    port: number;
 }

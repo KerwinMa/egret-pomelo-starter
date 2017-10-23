@@ -1,5 +1,6 @@
 import * as puremvc from 'puremvc';
 import * as Logger from 'pomelo-logger';
+
 import StartupCommand from './controller/StartupCommand';
 
 const logger = Logger.getLogger('AppFacade', __filename);

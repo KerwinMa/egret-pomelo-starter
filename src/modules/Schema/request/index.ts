@@ -12,7 +12,7 @@ export default class RequestSchema {
         userId: Joi.number().required(),
     };
 
-    public static AUTH_LOGIN: object = {
+    public static USER_SIGNIN: object = {
         account: Joi.string().required(),
         password: Joi.string().required(),
         token: Joi.string(),
@@ -20,5 +20,10 @@ export default class RequestSchema {
 
     public static AUTH_CONNECT: object = {
         token: Joi.string().required(),
+    };
+
+    public static USER_SIGNUP: object = {
+        account: Joi.string().required(),
+        password: Joi.string().required(),
     };
 }

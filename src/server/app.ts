@@ -40,9 +40,9 @@ app.configure('production|development', () => {
     // app global errorhandler
     app.set('errorHandler', errorHandler);
 
-    function errorHandler(code: Error, msg: string, resp: any, session: any, next: Function) {
+    function errorHandler(err: Error, msg: string, resp: any, session: any, next: Function) {
         next(null, {
-            c: code || 'InternalError',
+            c: err.message || 'InternalError',
             m: resp,
         });
     }

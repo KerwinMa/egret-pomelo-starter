@@ -42,7 +42,7 @@ export default class ConnectorMediator extends puremvc.Mediator implements purem
 
     // 选择一台connector服务器进行链接
     @handler('connector.handler.handler', __filename)
-    @validate(RequestSchema.AUTH_LOGIN)
+    @validate(RequestSchema.USER_SIGNIN)
     @log(__filename)
     public connect (args: any, session: any, next: Function) {
         next(null, {
