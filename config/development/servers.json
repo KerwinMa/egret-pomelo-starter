@@ -1,7 +1,4 @@
 {
-  "gate": [
-    {"id": "gate-server-1", "host": "localhost", "port": 3014, "clientPort": 2014, "frontend": true, "args":"--inspect=9001", "reloadHandlers": true}
-  ],
   "connector": [
     {"id": "connector-server-1", "host": "localhost", "port": 3050, "clientPort": 3090, "frontend": true, "args":"--inspect=9002"},
     {"id": "connector-server-2", "host": "localhost", "port": 3051, "clientPort": 3091, "frontend": true, "args":"--inspect=9003"}

@@ -22,7 +22,7 @@ export default class UserSignUpCommand extends puremvc.SimpleCommand {
             user = await userProxy.create({ account, password: md5(password) });
             if (cb) cb(null, user);
         } catch (err) {
-            if (cb) cb(err);
+            if (cb) cb(err.message);
         }
     }
 }

@@ -62,5 +62,5 @@ export const attributes = {
 };
 
 export const opts = {
-
+    id: true,
 };

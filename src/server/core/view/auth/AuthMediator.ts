@@ -1,35 +1,14 @@
 import * as puremvc from 'puremvc';
-import * as Pomelo from 'pomelo';
-import * as jwt from 'jsonwebtoken';
 
-import RequestSchema from '../../../../modules/Schema/request';
+import BaseMediator from '../BaseMediator';
+import NotificationName from '../../consts/NotificationName';
 import { validate, log, dsTrans, handler, iface } from '../../../../modules/Decorator/';
 
-export default class AuthMediator extends puremvc.Mediator implements puremvc.IMediator {
-
-    public static instance: AuthMediator = null;
-    public static getinstance (app:any, mediatorName?: string) {
-        if (!this.instance) this.instance = new AuthMediator(app, mediatorName);
-        return this.instance;
-    }
-
-    public app: Pomelo.Application;
-    public channelService: Pomelo.ChannelService;
+export default class AuthMediator extends BaseMediator {
 
     public constructor (app: any, mediatorName: string) {
         super(mediatorName, app);
 
-        this.app = app;
-        this.channelService = this.app.get('channelService');
-
-    }
-    // /****************************** handle pomelo push ***********************************/
-    public listNotificationInterests(): any[] {
-        return [];
-    }
-
-    public handleNotification(note: puremvc.INotification): void {
-        const notificationName = note.getName();
     }
 
     /**
@@ -45,12 +24,10 @@ export default class AuthMediator extends puremvc.Mediator implements puremvc.IM
     @handler('auth.remote.authRemote', __filename)
     public auth(token: any, next: Function) {
         const systemConfig = this.app.get('systemConfig');
-        
-        jwt.verify(token, systemConfig.JWT.JWT_SECRET, (err: Error, decoded: any) => {
-            if (err) return next(err);
-            
-            // auth success, callback decoded
-            next(null, decoded);
+        const JWT_SECRET = systemConfig.JWT.JWT_SECRET;
+
+        this.sendNotification(NotificationName.AUTH, { token, JWT_SECRET }, (err: Error, data: any) => {
+            next(err, data);
         });
     }
 }

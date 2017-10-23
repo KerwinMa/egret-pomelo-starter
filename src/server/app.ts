@@ -40,9 +40,9 @@ app.configure('production|development', () => {
     // app global errorhandler
     app.set('errorHandler', errorHandler);
 
-    function errorHandler(err: Error, msg: string, resp: any, session: any, next: Function) {
+    function errorHandler(code: string, msg: string, resp: any, session: any, next: Function) {
         next(null, {
-            c: err.message || 'InternalError',
+            c: code || 'UnknownError',
             m: resp,
         });
     }
@@ -56,17 +56,6 @@ app.configure('production|development', () => {
     app.load(sessionService, {
         singleSession: true, // 为true代表用户同一时间只能有一个连接(即一个session,注：session在http 和 socket之间是共享的),默认为true
         store: new RedisSessionStore(), // 提供一个储存session的介质,默认为内存,如果提供了介质则session在connector服务器间共享
-    });
-});
-
-/*
-*  websocket gate server
-*  connector 负载均衡服务器
-*/
-app.configure('production|development', 'gate', () => {
-    app.set('connectorConfig',{ 
-        connector: Pomelo.connectors.hybridconnector,
-        useProtobuf: true,
     });
 });
 

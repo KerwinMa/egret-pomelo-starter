@@ -5,4 +5,6 @@ export default class NotificationName {
     public static USER_SIGNUP_ACCOUNT_EXIST: string = 'USER_SIGNUP_ACCOUNT_EXIST';
 
     public static USER_SIGNIN: string = 'USER_SIGNIN';
+
+    public static AUTH: string = 'AUTH';
 }

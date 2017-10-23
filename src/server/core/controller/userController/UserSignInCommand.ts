@@ -13,11 +13,8 @@ export default class UserSignInCommand extends puremvc.SimpleCommand {
         const account = note.getBody().account;
         const password = note.getBody().password;
         const JWT_SECRET = note.getBody().JWT_SECRET;
-
         const cb = note.getType();
-
         const userProxy = <any>this.facade.retrieveProxy(ProxyName.userProxy);
-
         try {
             const user = await userProxy.findOne({ account });
             if (!user) throw new Error(msgCode.USER_SIGNIN_NO_USER);
@@ -26,7 +23,7 @@ export default class UserSignInCommand extends puremvc.SimpleCommand {
             const token = jwt.sign({ uid: user.id }, JWT_SECRET);
             if (cb) cb(null, { token });
         } catch (err) {
-            if (cb) cb(err);
+            if (cb) cb(err.message);
         }
     }
 }

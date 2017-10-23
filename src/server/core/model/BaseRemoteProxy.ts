@@ -15,8 +15,13 @@ export default class BaseRemoteProxy extends puremvc.Proxy implements puremvc.IP
         return new this.vo(user);
     }
 
-    public async findOne(...args: any[]): Promise<object> {
+    public async findOne (...args: any[]): Promise<object> {
         const user = await this.dbModel.findOne(...args);
+        return user ? new this.vo(user) : null;
+    }
+
+    public async findById (...args: any[]): Promise<object> {
+        const user = await this.dbModel.findById(...args);
         return user ? new this.vo(user) : null;
     }
 }

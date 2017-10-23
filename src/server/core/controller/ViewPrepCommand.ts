@@ -15,10 +15,10 @@ export default class ViewPrepCommand extends puremvc.SimpleCommand {
         const app = note.getBody();
 
         // get all the mediators
-        const gateMediator = GateMediator.getinstance(app, MediatorName.GATE_MEDIATOR);
-        const connectorMediator = ConnectorMediator.getinstance(app, MediatorName.CONNECTOR_MEDIATOR);
-        const httpconnectorMediator = HttpConnectorMediator.getinstance(app, MediatorName.HTTP_CONNECTOR_MEDIATOR);
-        const authMediator = AuthMediator.getinstance(app, MediatorName.AUTH_MEDIATOR);
+        const gateMediator = new GateMediator(app, MediatorName.GATE_MEDIATOR);
+        const connectorMediator = new ConnectorMediator(app, MediatorName.CONNECTOR_MEDIATOR);
+        const httpconnectorMediator = new HttpConnectorMediator(app, MediatorName.HTTP_CONNECTOR_MEDIATOR);
+        const authMediator = new AuthMediator(app, MediatorName.AUTH_MEDIATOR);
 
         // register all mediators
         this.facade.registerMediator(gateMediator);
