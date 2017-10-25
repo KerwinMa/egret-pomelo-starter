@@ -2,13 +2,12 @@ import * as puremvc from 'puremvc';
 
 import BaseMediator from '../BaseMediator';
 import NotificationName from '../../consts/NotificationName';
-import { validate, log, dsTrans, handler, iface } from '../../../../modules/Decorator/';
+import { validate, log, dsTrans, handler, iface } from '../../../app/decorator';
 
 export default class AuthMediator extends BaseMediator {
 
     public constructor (app: any, mediatorName: string) {
-        super(mediatorName, app);
-
+        super(app, mediatorName);
     }
 
     /**

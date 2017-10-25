@@ -1,4 +1,4 @@
-import * as Pomelo from 'pomelo';
+import * as pomelo from 'pomelo';
 import * as path from 'path';
 
 import * as sessionService from './app/component/session';
@@ -8,7 +8,7 @@ import RedisSessionStore from './app/service/sessionStore';
 /**
  * Init a pomelo application.
  */
-const app = Pomelo.createApp();
+const app = pomelo.createApp();
 app.set('name', 'egret-pomelo');
 
 /*
@@ -27,8 +27,8 @@ app.configure('production|development', () => {
     app.loadConfig('systemConfig', path.join(app.getBase(), '../../config/development/system.json'));
 
     // app global filter
-    app.before(Pomelo.filters.toobusy());
-    app.filter(Pomelo.filters.timeout());
+    app.before(pomelo.filters.toobusy());
+    app.filter(pomelo.filters.timeout());
 
     // app handler hot update
     app.set('serverConfig', { reloadHandlers: true });
@@ -65,7 +65,7 @@ app.configure('production|development', () => {
 */
 app.configure('production|development', 'connector', () => {
     app.set('connectorConfig',{
-        connector: Pomelo.connectors.hybridconnector,
+        connector: pomelo.connectors.hybridconnector,
         heartbeat: 3,
         useDict: true,
         useProtobuf: true,
@@ -96,8 +96,9 @@ app.configure('production|development', 'auth', () => {
 const serverId = app.getServerId();
 const appFacade = AppFacade.getInstance(serverId);
 
-appFacade.start(app);
-
+app.start(() => {
+    appFacade.start(app);
+});
 
 process.on('uncaughtException', (err) => {
     console.error(' Caught exception: ' + err.stack);

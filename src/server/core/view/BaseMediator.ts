@@ -5,12 +5,10 @@ export default class BaseMediator extends puremvc.Mediator implements puremvc.IM
     public app: Pomelo.Application;
     public channelService: Pomelo.ChannelService;
 
-    public constructor(app: any, mediatorName: string) {
+    public constructor(mediatorName: string, app: any) {
         super(mediatorName, app);
 
         this.app = app;
-        this.channelService = this.app.get('channelService');
-
     }
 
     // /****************************** handle pomelo push ***********************************/

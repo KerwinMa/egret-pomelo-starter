@@ -1,4 +1,4 @@
-import { DSTrans } from '../../JsonTrans';
+import { DSTrans } from '../../../../modules/JsonTrans';
 
 /**
  * 返回值json数据的转换装饰器

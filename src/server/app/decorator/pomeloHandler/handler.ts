@@ -1,4 +1,4 @@
-import MediaHandlerMap from '../../../server/core/view/MediatorHandlerMap';
+import MediaHandlerMap from '../../../core/view/MediatorHandlerMap';
 
 /**
  * pomelo 的handler不支持拆分，故自己写了个从mediator的方法中选择性的注册到相应服务器的handlerMap的装饰器
