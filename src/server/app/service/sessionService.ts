@@ -65,7 +65,7 @@ export default class SessionService {
                 case 'sessionBind':
                     sid = data.sid;
                     sessionData = data.session;
-                    const session = new Session(sid, sessionData.frontendId, {}, this, sessionData.uid, sessionData.settings);
+                    const session = new Session(sid, sessionData.frontendId, {}, this, sessionData.uid, JSON.parse(sessionData.settings));
                     if (!this.sessions[sid]) this.sessions[sid] = session;
                     const sids = this.getSidsByUid(session.uid);
                     if (sids.indexOf(sid) < 0) {
@@ -158,7 +158,7 @@ export default class SessionService {
      * @api private
      */
     private async updateSessionInStore (sid: string, settings: any = {}, uid: number) {
-        await this.store.update(sid, settings, uid);
+        await this.store.update(sid, JSON.stringify(settings), uid);
     }
 
     /**
@@ -457,9 +457,9 @@ export default class SessionService {
     public kick (uid: number, reason: any, cb: Function) {
         // compatible for old kick(uid, cb);
         if (typeof reason === 'function') {
-            // tslint:disable-next-line:no-param-reassign
+            // tslint:disable-next-line:no-parameter-reassignment
             cb = reason;
-            // tslint:disable-next-line:no-param-reassign
+            // tslint:disable-next-line:no-parameter-reassignment
             reason = 'kick';
         }
         const sessions = this.getByUid(uid);
@@ -496,9 +496,9 @@ export default class SessionService {
      */
     public kickBySessionId (sid: string, reason: any, cb: Function) {
         if (typeof reason === 'function') {
-            // tslint:disable-next-line:no-param-reassign
+            // tslint:disable-next-line:no-parameter-reassignment
             cb = reason;
-            // tslint:disable-next-line:no-param-reassign
+            // tslint:disable-next-line:no-parameter-reassignment
             reason = 'kick';
         }
         
@@ -530,9 +530,8 @@ export default class SessionService {
         if (session) {
             const socket = session.__socket__;
             return socket.remoteAddress;
-        } else {
-            return null;
         }
+        return null;
     }
 
     /**
@@ -770,10 +769,10 @@ class Session {
         this.__state__ = ST_CLOSED;
         this.__sessionService__.remove(this.id);
         this.emit('closed', this.toFrontendSession(), reason);
-        this.__socket__.emit('closing', reason);
+        if (this.__socket__.emit) this.__socket__.emit('closing', reason);
       
         process.nextTick(() => {
-            this.__socket__.disconnect();
+            if (this.__socket__.disconnect) this.__socket__.disconnect();
         });
     }
 }

@@ -19,6 +19,7 @@
     "@types/mongoose": "^4.7.23",
     "@types/nconf": "^0.0.34",
     "@types/random-js": "^1.0.30",
+    "@types/require-directory": "^2.1.0",
     "@types/sequelize": "^4.0.76",
     "@types/uid-safe": "^2.1.1",
     "@types/xlsx": "^0.0.36",
@@ -26,6 +27,7 @@
     "express": "^4.16.2",
     "ioredis": "^3.1.4",
     "joi": "^11.3.4",
+    "joi-objectid": "^2.0.0",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
@@ -35,8 +37,8 @@
     "nconf": "^0.8.5",
     "pomelo": "^2.2.5",
     "pomelo-logger": "^0.1.7",
-    "puremvc": "^1.0.4",
     "random-js": "^1.0.8",
+    "require-directory": "^2.1.1",
     "sequelize": "^4.13.8",
     "uid-safe": "^2.1.5",
     "xlsx": "^0.11.5"
@@ -47,6 +49,7 @@
     "typescript": "^2.5.3"
   },
   "scripts": {
-    "copytypings": "cp -r ./typings/* ./node_modules/@types/"
+    "copytypings": "cp -r ./typings/* ./node_modules/@types/",
+    "start dev": "node -r tsconfig.json build/server/app.js"
   }
 }

@@ -67,12 +67,12 @@ export default class RedisSessionStore {
         this.subscriber.on('message', this.emit.bind(this, 'message'));
 
         this.on('connect', () => {
-            logger.debug('connected to redis');
+            logger.debug('successfully connected to redis');
         });
 
         this.on('error', () => {
             logger.debug('redis error');
-            throw new Error('redis error');
+            throw new Error('connect to redis with error');
         });
 
         this.on('reconnecting', () => {
@@ -152,7 +152,7 @@ export default class RedisSessionStore {
     public async destroy (sid: string) {
         await this.redis.del(sid);
         await this.redis.srem(this.setName, sid);
-        this.redis.publish('sessionDestroy', sid);
+        this.redis.publish('sessionDestroy', JSON.stringify({ sid }));
     }
 
     /**

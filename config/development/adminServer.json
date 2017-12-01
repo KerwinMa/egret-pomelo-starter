@@ -1,19 +1,10 @@
 [{
-  "type": "httpserver",
-  "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-}, {
-  "type": "httpgate",
-  "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-},{
   "type": "connector",
   "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-},{
-  "type": "gameserver",
+}, {
+  "type": "httpconnector",
   "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
 }, {
-    "type": "gameserverall",
-    "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-}, {
-  "type": "gate",
+  "type": "auth",
   "token": "agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
 }]

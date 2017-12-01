@@ -8,16 +8,15 @@
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "removeComments": true,
-        "traceResolution": false,
+        "traceResolution": true,
         "rootDir": "./src",
         "outDir": "./build",
         "declaration": false,
-        "allowJs": false
+        "allowJs": false,
+        "typeRoots": []
     },
     "exclude": [
         "src/client/",
-        "src/modules/newaes",
-        "src/modules/protobuf",
-        "src/modules/puremvc"
+        "modules"
     ]
 }

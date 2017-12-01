@@ -1,0 +1,27 @@
+export default {
+    OK: 200,
+    FAIL: 500,
+    VALIDATE: 400,
+
+    AUTH: {
+        FA_NOT_SIGNIN: 1001,
+        FA_TOKEN_VERIFY_FAIL: 1002,
+        FA_PASSWORD_NOT_CORRECT: 1003,
+        FA_ACCOUNT_FORBIDDEN_BY_ACCOUNT: 1004,
+        FA_ACCOUNT_FORBIDDEN_BY_DEVICE: 1005,
+    },
+    
+    ACCOUNT: {
+        FA_ACCOUNT_EXISTS: 2001,
+        FA_ACCOUNT_NOT_EXIST: 2002,
+    },
+
+    ENTRY: {
+        FA_SERVER_NOT_EXIT: 3001,
+        FA_SERVER_AVAILABLE: 3002,
+        FA_SESSION_ALREADY_BIND: 3003,
+        FA_DUPLICATE_ENTRY: 3004,
+        FA_SET_SESSION_FAIL: 3005,
+    },
+
+};

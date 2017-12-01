@@ -77,10 +77,9 @@ class Connector {
         if (sid) {
             // request-response 返回
             return msg;
-        } else {
-            // notify-push 返回
-            return JSON.stringify(msg);
         }
+        // notify-push 返回
+        return JSON.stringify(msg);
     }
 
     /**

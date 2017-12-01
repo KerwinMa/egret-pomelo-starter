@@ -1,13 +1,13 @@
 {
   "connector": [
-    {"id": "connector-server-1", "host": "localhost", "port": 3050, "clientPort": 3090, "frontend": true, "args":"--inspect=9002"},
-    {"id": "connector-server-2", "host": "localhost", "port": 3051, "clientPort": 3091, "frontend": true, "args":"--inspect=9003"}
+    {"id": "connector-server-1", "host": "127.0.0.1", "port": 3050, "clientPort": 3090, "frontend": true, "args":"--inspect=3080"},
+    {"id": "connector-server-2", "host": "127.0.0.1", "port": 3051, "clientPort": 3091, "frontend": true, "args":"--inspect=3081"}
   ],
   "httpconnector": [
-    {"id": "httpconnector-server-1","host": "127.0.0.1","port": 4050, "clientPort": 3000, "frontend": true, "args":"--inspect=9004"},
-    {"id": "httpconnector-server-2","host": "127.0.0.1","port": 4051, "clientPort": 3001, "frontend": true, "args":"--inspect=9005"}
+    {"id": "httpconnector-server-1","host": "127.0.0.1","port": 4050, "clientPort": 4090, "frontend": true, "args":"--inspect=4080"},
+    {"id": "httpconnector-server-2","host": "127.0.0.1","port": 4051, "clientPort": 4091, "frontend": true, "args":"--inspect=4081"}
   ],
   "auth": [
-    {"id": "auth-server-1","host": "127.0.0.1","port": 5050, "args":"--inspect=9006"}
+    {"id": "auth-server-1","host": "127.0.0.1","port": 5050, "args":"--inspect=5090"}
   ]
 }

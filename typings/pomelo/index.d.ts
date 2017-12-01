@@ -699,7 +699,7 @@ declare module pomelo {
          * @param {string}   uid user id asscociated with the session
          * @param {Function} cb  callback function         
          */
-        kick(uid: string, cb: Function): void;
+        kick(uid: string, reason?: any ,cb?: Function): void;
         
         /**
          * Kick a user offline by session id.
@@ -707,7 +707,7 @@ declare module pomelo {
          * @param {string}   sid session id
          * @param {Function} cb  callback function         
          */
-        kickBySessionId(sid: string, cb: Function): void;
+        kickBySessionId(sid: string, reason?: any ,cb?: Function): void;
     }
     
     /**

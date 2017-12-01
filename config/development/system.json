@@ -2,5 +2,9 @@
     "JWT": {
         "EXPIRESIN": 3600,
         "JWT_SECRET": "JWT_SECRET"
+    },
+    "DEFAULT": {
+        "DEFAULT_PASSWORD": "123456",
+        "START_ACCOUNT_NO": 8000000
     }
 }

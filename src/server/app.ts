@@ -2,8 +2,8 @@ import * as pomelo from 'pomelo';
 import * as path from 'path';
 
 import * as sessionService from './app/component/session';
-import AppFacade from './core/AppFacade';
 import RedisSessionStore from './app/service/sessionStore';
+import MongoClient from './lib/DB/mongoose';
 
 /**
  * Init a pomelo application.
@@ -36,44 +36,38 @@ app.configure('production|development', () => {
     // app remote hot update
     app.set('remoteConfig', { reloadRemotes: true });
 
-
-    // app global errorhandler
-    app.set('errorHandler', errorHandler);
-
-    function errorHandler(code: string, msg: string, resp: any, session: any, next: Function) {
-        next(null, {
-            c: code || 'UnknownError',
-            m: resp,
-        });
-    }
+    // app global errorHandler
+    app.set('errorHandler', (code: string, msg: string, resp: any, session: any, next: Function) => {
+        next(null, code);
+    });
 });
 
 /*
 *  rewrited sessionService for pomelo
 *  为所有前端服务器添加, 需要改一下pomelo源码
 */
-app.configure('production|development', () => {
+app.configure('production|development', 'connector|httpconnector' ,() => {
     app.load(sessionService, {
-        singleSession: true, // 为true代表用户同一时间只能有一个连接(即一个session,注：session在http 和 socket之间是共享的),默认为true
+        singleSession: false, // 为true代表用户同一时间只能有一个连接(即一个session,注：session在http 和 socket之间是共享的),默认为true
         store: new RedisSessionStore(), // 提供一个储存session的介质,默认为内存,如果提供了介质则session在connector服务器间共享
     });
 });
 
 /*
-*  websocket connector server
+*  websocket 连接服务器
 *  socket连接服务器,负责收发消息,维护连接
 */
 app.configure('production|development', 'connector', () => {
     app.set('connectorConfig',{
         connector: pomelo.connectors.hybridconnector,
-        heartbeat: 3,
+        heartbeat: 10,
         useDict: true,
         useProtobuf: true,
     });
 });
 
 /*
-*  http connector server
+*  http 连接服务器
 *  自己封装的http connector，处理http请求，调用app内资源
 */
 app.configure('production|development', 'httpconnector', () => {
@@ -85,19 +79,27 @@ app.configure('production|development', 'httpconnector', () => {
 });
 
 /*
-*  auth server
+*  账户认证服务器
 *  提供token以及三方登录验证的服务器
 */
 app.configure('production|development', 'auth', () => {
 
 });
 
-// start puremvc application
-const serverId = app.getServerId();
-const appFacade = AppFacade.getInstance(serverId);
+/* 
+*  配置数据库连接
+*  为每个服务器分配一个连接，并初始化schema
+*/
+app.configure('production|development', () => {
+    // 连接mongodb，并初始化schema
+    const schemaDirPath = path.resolve(__dirname, './core/schema/mongo');
+    MongoClient.connect();
+    MongoClient.initModel(schemaDirPath);
+});
 
+// start pomelo server
 app.start(() => {
-    appFacade.start(app);
+
 });
 
 process.on('uncaughtException', (err) => {
